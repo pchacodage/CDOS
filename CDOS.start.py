@@ -4,7 +4,11 @@ print("CDOS is starting")
 import time as tm
 import math
 import random as rnd
-
+def shutdown():
+    print("system downing ...")
+    tm.sleep(3)
+    print("system is down !")
+    exit()
 modeinput = 0
 session_number = 1
 session = ["general"]
@@ -51,7 +55,7 @@ while True:
         print("the result is", result)
     if order == "help":
         print(
-            "here's the list of all the commands: \n calculator : a very basic calculator \n help : you know \n rnd : : choose a random number between 2 numbers you choose\n seetings : Seetings of computer. Can only acces with admin access")
+            "here's the list of all the commands: \n calculator : a very basic calculator \n help : you know \n rnd : : choose a random number between 2 numbers you choose\n settings : Settings of computer. Can only acces with admin access\n SHUTDOWN : exit from the programm")
     if order == "rnd":
         first_limit = input("please enter the first limit")
         try:
@@ -115,9 +119,6 @@ while True:
                                                         print("error, answer is not good")
         else:
             print ("system hack or bypass detected, system shutdowning")
-            exit()
+            shutdown()
     if order == "SHUTDOWN":
-        print ("system downing ...")
-        tm.sleep(3)
-        print("system is down !")
-        exit()
+        shutdown()
