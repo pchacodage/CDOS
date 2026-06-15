@@ -8,7 +8,7 @@
   - ### ~~settings~~
   - ### ~~clock~~
   - ### ~~colony development assist~~
-- ## make a function to easier print the errors
+- ## ~~make a function to easier print the errors~~
 - ## make the import error system capable of handeling multiples import error
 - ## do not create the saving files if they're empty
 - ## fixing the shutdown without saving that actually make saves
