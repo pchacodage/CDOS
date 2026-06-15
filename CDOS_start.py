@@ -1,5 +1,3 @@
-#from win32lz import Close
-
 print("Colony Developement")
 print("CDOS is starting")
 #put start code here
@@ -53,21 +51,26 @@ try:
 except ImportError:
     print ("Error 1 (sys): Critical, CDOS will start in safety mode.")
     safety_mode = 6
+print ("os detected :",sys.platform)
+os = sys.platform
 
-#try:
-   #import win32print
-#except ImportError:
-    #print("Error 1 (win32print): Critical, CDOS will start in safety mode.")
-    #safety_mode = 7
-#import win32api
+if os == "win32":
+    try:
+        import win32print
+    except ImportError:
+        print("Error 1 (win32print): Critical, CDOS will start in safety mode.")
+        safety_mode = 7
+    import win32api
+
 
 file = ""
 game_to_exe = ("nah bro")
 txt_file = open("file_editor.txt", "a")
 txt_file.write(str(file))
 txt_file.close()
-if safety_mode != 7:
-    #printer_name = win32print.GetDefaultPrinter()
+if safety_mode != 7 and os == "win32":
+    print()
+    printer_name = win32print.GetDefaultPrinter()
     print ("default printer is ", printer_name)
 else:
     print("Error 1: CDOS has started in safety mode (win32print)")
@@ -144,9 +147,13 @@ else:
          tm.sleep(3)
          shutdown(1)
 
-import pywintypes
-
-PyHANDLE = pywintypes.HANDLE()
+if os == "win32":
+    try:
+        import pywintypes
+    except ImportError:
+        safety_mode == 8
+    else :
+        PyHANDLE = pywintypes.HANDLE()
 
 
 #end of starting
@@ -179,7 +186,7 @@ while True:
                 else:
                     if sign == "+":
                         result = (first_number + second_number)
-        print("the result is",result)
+        LOGGER.info("the result is",result)
     if order == "help":
         LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know \n rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
     if order == "rnd":
@@ -306,7 +313,7 @@ while True:
              gameorder = input("which game do you want to start today ?")
              if gameorder == "wt":
                  LOGGER.info("ok, bro, let's spend your hole day on this game (ps : use keyboard/mouse)")
-                 os.system(r"C:/Users/Paul/AppData/Local/WarThunder/launcher.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
                  LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu\n  MSFS : start Microsoft Flight Simulator with pilots for yoke and his attachements ")
@@ -315,19 +322,17 @@ while True:
                  gamemenu = 0
              if gameorder == "X-plane 12":
                  LOGGER.info("Good flight, pilot !")
-                 os.system(r"C:\Program Files (x86)\Steam\steamapps\common\X-Plane 12\X-Plane.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "Minecraft":
                  Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/N)")
                  if Minecraft_mod == "N":
                     LOGGER.info("tun tun tun tun; tin tin tit; tan tan tan tan ")
                     gamemenu = 0
-                    os.system(r"C:\XboxGames\Minecraft_Launcher\Content\Minecraft.exe")
+                    os.system(r"")
                  else:
                      LOGGER.info("Launching mods ...")
-                     os.system(r"C:\Program Files (x86)\Overwolf\OverwolfLauncher.exe")
-             if gameorder == "exit()":
-                 gamemenu = 0
+                     os.system(r"")
              if gameorder == "CS2":
                  LOGGER.info("CS2 is unavailable, please re-install it before start")
                  #LOGGER.info("good suffering session with russians, bro")
@@ -338,11 +343,11 @@ while True:
                  LOGGER.info("...")
                  tm.sleep(3)
                  LOGGER.info("why not ...")
-                 os.system(r"C:\Users\Paul\AppData\Local\Roblox\Versions\version-31fc142272764f02\RobloxPlayerBeta.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "ng":
                  LOGGER.info("Go play good patriot !")
-                 os.system(r"C:\Users\Paul\AppData\Local\NationsGlory\NationsGlory.exe")
+                 os.system(r"")
     if order == "colony development assist":
         LOGGER.info("Welcome to the colony development assistant (not ai, just in python), type help for more info")
         coldevasist_st = 1
@@ -442,8 +447,10 @@ while True:
             os.system ("put internet.exe path here")
         if app_launch == "start server":
             LOGGER.info ("starting server ...")
-            os.system(r"C:\Users\Paul\Documents\Perso\Informatique\Serveur_create\run.bat")
-            os.system(r"C:\Users\Paul\Documents\Perso\Informatique\Serveur_Minecraft\bin\playit.exe")
+            # start in first the internet pipe like playit.gg
+            os.system(r"")
+            # finally, start the server with start.bat
+            os.system(r"")
             LOGGER.info ("server started")
 
     if order == "computer info":
@@ -524,15 +531,16 @@ while True:
     if order == "text_file.print":
         if safety_mode == 7:
             LOGGER.info ("Error 1 (win32print): Critical, CDOS will start in safety mode. Please retry later")
-        else :
-
-            try:
-                win32print.StartPagePrinter(printer_name)
-                win32print.WritePrinter(printer_name,txt_file)
-                win32print.EndPagePrinter(printer_name)
-            finally:
-                win32print.ClosePrinter(printer_name)
+            if os != "win32":
+                LOGGER.info ("Error ")
+            else:
+                try:
+                    win32print.StartPagePrinter(printer_name)
+                    win32print.WritePrinter(printer_name,txt_file)
+                    win32print.EndPagePrinter(printer_name)
+                finally:
+                    win32print.ClosePrinter(printer_name)
 
     if order == "fd backup":
-        if safety_mode ==4:
+        if safety_mode !=4:
             os.fsync()
