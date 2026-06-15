@@ -1,0 +1,11 @@
+# objectives
+- ## linux and other os support on CDOS
+- ## complete the help command on all applications
+- ## make a function to easier print the errors
+- ## make the import error system capable of handeling multiples import error
+- ## do not create the saving files if they're empty
+- ## fixing the shutdown without saving that actually make saves
+- ## finish the fd backup tool
+- ## adding a config for file path for games and app launch
+  - ### adding the possibility to add apps to the app launcher
+- ## fixing the computer info command by replacing all the loggers by print
