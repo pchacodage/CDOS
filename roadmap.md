@@ -17,3 +17,4 @@
   - ### adding the possibility to add apps to the app launcher
 - ## fixing the computer info command by replacing all the loggers by print
 - ## adding a system to add elements to the database of the coldev assist
+- 
