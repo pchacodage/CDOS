@@ -1,17 +1,26 @@
 print("Colony Developement")
 print("CDOS is starting")
 #put start code here
+def error_print (error_code,details,state):
+    if error_code == 0:
+        print ("Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
+        exit("Bash error : logging import error (code 0)")
+    if state == "start":
+        print("Error 1 (",details,"): critical, CDOS will start in safety mode.")
+    if state == "during":
+        print("Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later")
+
 safety_mode = 0
 try:
     import time as tm
 except ImportError:
-    print("Error 1 (time as tm): Critical, CDOS will start in safety mode.")
+    error_print(1,"time","start")
     safety_mode = 1
 
 try:
     import datetime
 except ImportError:
-    print("Error 1 (datetime): Critical, CDOS will start in safety mode.")
+    error_print(1,"datetime","start")
     safety_mode = 2
 
 #import math
@@ -19,15 +28,13 @@ except ImportError:
 try:
     import random as rnd
 except ImportError:
-    print("Error 1 (random as rnd): Critical, CDOS will start in safety mode.")
+    error_print(1,"random","start")
     safety_mode = 3
 
 try:
     import logging
 except ImportError:
-    print("Error 0 : Critical, please refer to the error manual, CDOS will exit().")
-    tm.sleep(3)
-    exit("Bash error : loging import error (code 0)")
+    error_print(0,"","")
 else:
     LOGGER: logging.Logger = logging.getLogger(__name__)
     LOGGER.addHandler(logging.StreamHandler())
@@ -37,19 +44,20 @@ else:
 try:
     import os
 except ImportError:
-    print("Error 1 (os): Critical, CDOS will start in safety mode.")
+    error_print(1,"os","start")
     safety_mode = 4
 
 try:
     import psutil
 except ImportError:
     print("Error 1 (psutil): Critical, CDOS will start in safety mode.")
+    error_print(1,"psutil","start")
     safety_mode = 5
 
 try:
     import sys
 except ImportError:
-    print ("Error 1 (sys): Critical, CDOS will start in safety mode.")
+    error_print(1,"sys","start")
     safety_mode = 6
 print ("os detected :",sys.platform)
 os = sys.platform
@@ -58,13 +66,13 @@ if os == "win32":
     try:
         import win32print
     except ImportError:
-        print("Error 1 (win32print): Critical, CDOS will start in safety mode.")
+        error_print(1,"win32print","start")
         safety_mode = 7
-    import win32api
+
 
 
 file = ""
-game_to_exe = ("nah bro")
+game_to_exe = "nah bro"
 txt_file = open("file_editor.txt", "a")
 txt_file.write(str(file))
 txt_file.close()
@@ -73,7 +81,7 @@ if safety_mode != 7 and os == "win32":
     printer_name = win32print.GetDefaultPrinter()
     print ("default printer is ", printer_name)
 else:
-    print("Error 1: CDOS has started in safety mode (win32print)")
+    error_print(1,"win32print","during")
 
 #for the good version, replace . txt (except txt_file ) to .bin
 def saving():
@@ -472,7 +480,7 @@ while True:
     if order == "computer info":
          screen_monitoring_while = 1
          if safety_mode == 5:
-             LOGGER.info ("Import error : your CDOS is in safety mode due to an import (psutil) error, please restart the programm ands retry later")
+             error_print(1,"psutil","during")
              screen_monitoring_while = 0
          #creating variables for the screen monitoring
          else:
@@ -539,10 +547,10 @@ while True:
                                 print(f"  {entry.label or 'No label'} : {entry.current}°C")
                  except :
                      LOGGER.info("error : your computer does not have any sensor !")
-             if screen_monitoring_order == "general informations":
+             if screen_monitoring_order == "general info":
                 boot_time = psutil.boot_time()
                 print("Système démarré le :", datetime.datetime.fromtimestamp(boot_time))
-                LOGGER.info ("Nom de l'os", os.uname())
+                print("Nom de l'os :", sys.platform)
 
     if order == "text_file.print":
         if safety_mode == 7:
