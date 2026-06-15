@@ -98,31 +98,22 @@ def saving():
     txt_file.write(str(file))
     txt_file.close()
 
-#set up seesions variables
+#set up sessions variables
 try : session_number_file = open("saving(session_number).bin","r")
 except:
+    session_number = [1]
+    password = ["no password"]
+    sessions = ["nope"]
+else:
     sessions_file = open("saving(sessions).bin","w")
+    sessions = [sessions_file]
     sessions_file.close()
-    session_number = ["general"]
     session_number_file = open("saving(session_number).bin","w")
     session_number_file.close()
     session_number = 1
     passwords_file = open ("saving(passwords)","w")
     passwords_file.close()
-    passwords = ["No password"]
-
-
-session_number_file = open("saving(session_number).bin","r")
-session_number = session_number_file
-session_number_file.close()
-
-sessions_file = open("saving(sessions).bin","r")
-sessions = [sessions_file]
-sessions_file.close()
-
-passwords_file = open ("saving(passwords)","r")
-passwords = [passwords_file]
-passwords_file.close()
+    passwords = [passwords_file]
 
 def shutdown(saving_bp):
     if saving_bp == 0:
@@ -221,7 +212,7 @@ while True:
                         LOGGER.info("here's the list of the commands : help : you know \n sessions : for create, delete and modify the sessions \n cdos.safetymode.bypass : bypass the safetymode (debugging)")
                         LOGGER.info("exit() : exit from this app \n admin access : debugging and core's functions")
                     if order_settings == ("sessions"):
-                        if session_number == 1:
+                        if 1 in session_number:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
                             try:
                                 str(session_mode_order)
