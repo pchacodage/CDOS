@@ -1,6 +1,13 @@
 # objectives
-- ## linux and other os support on CDOS
+- ## ~~linux and other os support on CDOS~~
 - ## complete the help command on all applications
+  - ### ~~global~~
+  - ### ~~game launcher~~
+  - ### ~~app launcher~~
+  - ### ~~computer info~~
+  - ### ~~settings~~
+  - ### ~~clock~~
+  - ### ~~colony development assist~~
 - ## make a function to easier print the errors
 - ## make the import error system capable of handeling multiples import error
 - ## do not create the saving files if they're empty
@@ -9,3 +16,4 @@
 - ## adding a config for file path for games and app launch
   - ### adding the possibility to add apps to the app launcher
 - ## fixing the computer info command by replacing all the loggers by print
+- ## adding a system to add elements to the database of the coldev assist

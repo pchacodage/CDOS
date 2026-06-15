@@ -188,7 +188,15 @@ while True:
                         result = (first_number + second_number)
         LOGGER.info("the result is",result)
     if order == "help":
-        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know \n rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
+        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know")
+        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
+        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \n SHUTDOWN : shutdown the system")
+        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \n Wait a minute ... : no desc \n clock : an app that makes clocks, calendar ...")
+        LOGGER.info ("games : a menu to launch games from you computer (only works if setted up)")
+        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \n app launcher : a launcher for regular apps")
+        if os == "win32":
+            LOGGER.info ("text_file.print : command that prints your text from the text editor to a paper printer")
+        LOGGER.info ("fd backup : a system for backup floppy disks (forcing the system to copy files from fd to disk, in CDOS file)")
     if order == "rnd":
         first_limit = input ("please enter the first limit")
         try:
@@ -213,6 +221,7 @@ while True:
                     order_settings = input("what do you want ?")
                     if order_settings == ("help"):
                         LOGGER.info("here's the list of the commands : help : you know \n sessions : for create, delete and modify the sessions \n cdos.safetymode.bypass : bypass the safetymode (debugging)")
+                        LOGGER.info("exit() : exit from this app \n admin access : debugging and core's functions")
                     if order_settings == ("sessions"):
                         if session_number == 1:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
@@ -287,7 +296,7 @@ while True:
         while clock == 1:
             clock_order = input ("What do you want")
             if clock_order == "help":
-                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today")
+                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today \n exit() : exit from the clock menu")
             if clock_order == "timer":
                 timer_sec = input ("How Many second do you want ?")
                 timer_minute = input("how many minutes do you want ?")
@@ -316,7 +325,8 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
-                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu\n  MSFS : start Microsoft Flight Simulator with pilots for yoke and his attachements ")
+                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu")
+                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \n Roblox : start roblox \n ng : start the nationsglory launcher")
                  LOGGER.info("Minecraft : launch the Minecraft launcher \n CS2 : starts Counter-strike2")
              if gameorder == "exit()":
                  gamemenu = 0
@@ -351,7 +361,6 @@ while True:
     if order == "colony development assist":
         LOGGER.info("Welcome to the colony development assistant (not ai, just in python), type help for more info")
         coldevasist_st = 1
-        coldevassistorder = "nothing, bro"
         while coldevasist_st == 1:
             coldevassistorder = input("How can I help you today")
             if coldevassistorder == "ASCII repository":
@@ -436,9 +445,14 @@ while True:
                     LOGGER.info ("Hexadecimal : 48 \nBinary : 01001000 \nDescription : the uppercase h")
                 if ASCIIrep_ordr == "I":
                     LOGGER.info ("Hexadecimal : 49 \nBinary : 01001001 \nDescription : the uppercase i")
+            if coldevassistorder == "exit()":
+                coldevasist_st = 0
+            if coldevassistorder == "help":
+                LOGGER.info ("ASCII repository : a repository of all the symbols of you're keyboard with their hexadecimal, binary code and their description")
+                LOGGER.info ("exit() : exit from the app \n database : access to your script database \n help : you know")
             if coldevassistorder == "database":
-                databaseorder = input("Which data do you want ? (language, title")
-                if "pyhton" in databaseorder:
+                databaseorder = input("Which data do you want ? (language, title)")
+                if ("python") in databaseorder:
                     databaseorder_python = input("which script do you want to keep ?")
         LOGGER.info ("error : bash : command not found !")
     if order == "app launcher":
@@ -452,6 +466,8 @@ while True:
             # finally, start the server with start.bat
             os.system(r"")
             LOGGER.info ("server started")
+            if app_launch == "help":
+                LOGGER.info ("start server : start the Minecraft server and the internet pipe you configured \n internet : start an internet navigator")
 
     if order == "computer info":
          screen_monitoring_while = 1
