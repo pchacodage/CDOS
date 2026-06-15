@@ -1,27 +1,27 @@
 print("Colony Developement")
 print("CDOS is starting")
 #put start code here
+safetymode = []
 def error_print (error_code,details,state):
     if error_code == 0:
         print ("Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
         exit("Bash error : logging import error (code 0)")
-    if state == "start":
-        print("Error 1 (",details,"): critical, CDOS will start in safety mode.")
-    if state == "during":
-        print("Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later")
-
-safety_mode = 0
+    if error_code == 1:
+        if state == "start":
+            print("Error 1 (",details,"): critical, CDOS will start in safety mode.")
+        if state == "during":
+            print("Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later")
 try:
     import time as tm
 except ImportError:
     error_print(1,"time","start")
-    safety_mode = 1
+    safetymode.append("1")
 
 try:
     import datetime
 except ImportError:
     error_print(1,"datetime","start")
-    safety_mode = 2
+    safetymode.append("2")
 
 #import math
 
@@ -29,7 +29,7 @@ try:
     import random as rnd
 except ImportError:
     error_print(1,"random","start")
-    safety_mode = 3
+    safetymode.append("3")
 
 try:
     import logging
@@ -40,43 +40,43 @@ else:
     LOGGER.addHandler(logging.StreamHandler())
     LOGGER.setLevel(logging.INFO)
 
-
 try:
     import os
 except ImportError:
     error_print(1,"os","start")
-    safety_mode = 4
+    safetymode.append("4")
 
 try:
     import psutil
 except ImportError:
-    print("Error 1 (psutil): Critical, CDOS will start in safety mode.")
     error_print(1,"psutil","start")
-    safety_mode = 5
-
+    safetymode.append("5")
 try:
     import sys
 except ImportError:
     error_print(1,"sys","start")
-    safety_mode = 6
-print ("os detected :",sys.platform)
-os = sys.platform
+    safetymode.append("6")
 
 if os == "win32":
     try:
         import win32print
     except ImportError:
+        safetymode.append("7")
         error_print(1,"win32print","start")
-        safety_mode = 7
-
-
-
+else :
+    safetymode.append("7")
+    error_print(1, "win32print", "start")
+try:
+    import sys
+except ImportError:
+    error_print(1,"sys","start")
+    safetymode.append("8")
 file = ""
 game_to_exe = "nah bro"
 txt_file = open("file_editor.txt", "a")
 txt_file.write(str(file))
 txt_file.close()
-if safety_mode != 7 and os == "win32":
+if "7" not in safetymode and os == "win32":
     print()
     printer_name = win32print.GetDefaultPrinter()
     print ("default printer is ", printer_name)
@@ -138,8 +138,8 @@ def shutdown(saving_bp):
         LOGGER.info("forcing shuting down (without save) ...")
         tm.sleep(1/2)
         exit()
-
-
+print ("os detected :",sys.platform)
+os = sys.platform
 if sessions == "General" :
     session = input("wich session do you want to start (please enter the identifiant of session) ?")
 else:
@@ -154,18 +154,8 @@ else:
          LOGGER.info("critical error : answer not availaible")
          tm.sleep(3)
          shutdown(1)
-
-if os == "win32":
-    try:
-        import pywintypes
-    except ImportError:
-        safety_mode == 8
-    else :
-        PyHANDLE = pywintypes.HANDLE()
-
-
 #end of starting
-import sys
+
 
 LOGGER.info("CDOS is started")
 while True:
@@ -281,7 +271,7 @@ while True:
                             LOGGER.info("Here's the list of all the system's variables")
                             LOGGER.info
                         if adminaccess_order == "safetymode.bypass":
-                            safety_mode = 0
+                            safetymode.clear
                             LOGGER.info("Safetymode has been disabled !")
 
 
@@ -479,7 +469,7 @@ while True:
 
     if order == "computer info":
          screen_monitoring_while = 1
-         if safety_mode == 5:
+         if "5" in safetymode:
              error_print(1,"psutil","during")
              screen_monitoring_while = 0
          #creating variables for the screen monitoring
@@ -553,7 +543,7 @@ while True:
                 print("Nom de l'os :", sys.platform)
 
     if order == "text_file.print":
-        if safety_mode == 7:
+        if "7" in safetymode:
             LOGGER.info ("Error 1 (win32print): Critical, CDOS will start in safety mode. Please retry later")
             if os != "win32":
                 LOGGER.info ("Error ")
@@ -566,5 +556,5 @@ while True:
                     win32print.ClosePrinter(printer_name)
 
     if order == "fd backup":
-        if safety_mode !=4:
+        if "4" not in safetymode:
             os.fsync()
