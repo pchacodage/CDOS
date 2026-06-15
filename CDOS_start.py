@@ -1,5 +1,3 @@
-#from win32lz import Close
-
 print("Colony Developement")
 print("CDOS is starting")
 #put start code here
@@ -53,21 +51,26 @@ try:
 except ImportError:
     print ("Error 1 (sys): Critical, CDOS will start in safety mode.")
     safety_mode = 6
+print ("os detected :",sys.platform)
+os = sys.platform
 
-#try:
-   #import win32print
-#except ImportError:
-    #print("Error 1 (win32print): Critical, CDOS will start in safety mode.")
-    #safety_mode = 7
-#import win32api
+if os == "win32":
+    try:
+        import win32print
+    except ImportError:
+        print("Error 1 (win32print): Critical, CDOS will start in safety mode.")
+        safety_mode = 7
+    import win32api
+
 
 file = ""
 game_to_exe = ("nah bro")
 txt_file = open("file_editor.txt", "a")
 txt_file.write(str(file))
 txt_file.close()
-if safety_mode != 7:
-    #printer_name = win32print.GetDefaultPrinter()
+if safety_mode != 7 and os == "win32":
+    print()
+    printer_name = win32print.GetDefaultPrinter()
     print ("default printer is ", printer_name)
 else:
     print("Error 1: CDOS has started in safety mode (win32print)")
@@ -144,9 +147,13 @@ else:
          tm.sleep(3)
          shutdown(1)
 
-import pywintypes
-
-PyHANDLE = pywintypes.HANDLE()
+if os == "win32":
+    try:
+        import pywintypes
+    except ImportError:
+        safety_mode == 8
+    else :
+        PyHANDLE = pywintypes.HANDLE()
 
 
 #end of starting
@@ -179,9 +186,17 @@ while True:
                 else:
                     if sign == "+":
                         result = (first_number + second_number)
-        print("the result is",result)
+        LOGGER.info("the result is",result)
     if order == "help":
-        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know \n rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
+        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know")
+        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
+        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \n SHUTDOWN : shutdown the system")
+        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \n Wait a minute ... : no desc \n clock : an app that makes clocks, calendar ...")
+        LOGGER.info ("games : a menu to launch games from you computer (only works if setted up)")
+        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \n app launcher : a launcher for regular apps")
+        if os == "win32":
+            LOGGER.info ("text_file.print : command that prints your text from the text editor to a paper printer")
+        LOGGER.info ("fd backup : a system for backup floppy disks (forcing the system to copy files from fd to disk, in CDOS file)")
     if order == "rnd":
         first_limit = input ("please enter the first limit")
         try:
@@ -206,6 +221,7 @@ while True:
                     order_settings = input("what do you want ?")
                     if order_settings == ("help"):
                         LOGGER.info("here's the list of the commands : help : you know \n sessions : for create, delete and modify the sessions \n cdos.safetymode.bypass : bypass the safetymode (debugging)")
+                        LOGGER.info("exit() : exit from this app \n admin access : debugging and core's functions")
                     if order_settings == ("sessions"):
                         if session_number == 1:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
@@ -280,7 +296,7 @@ while True:
         while clock == 1:
             clock_order = input ("What do you want")
             if clock_order == "help":
-                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today")
+                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today \n exit() : exit from the clock menu")
             if clock_order == "timer":
                 timer_sec = input ("How Many second do you want ?")
                 timer_minute = input("how many minutes do you want ?")
@@ -306,28 +322,27 @@ while True:
              gameorder = input("which game do you want to start today ?")
              if gameorder == "wt":
                  LOGGER.info("ok, bro, let's spend your hole day on this game (ps : use keyboard/mouse)")
-                 os.system(r"C:/Users/Paul/AppData/Local/WarThunder/launcher.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
-                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu\n  MSFS : start Microsoft Flight Simulator with pilots for yoke and his attachements ")
+                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu")
+                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \n Roblox : start roblox \n ng : start the nationsglory launcher")
                  LOGGER.info("Minecraft : launch the Minecraft launcher \n CS2 : starts Counter-strike2")
              if gameorder == "exit()":
                  gamemenu = 0
              if gameorder == "X-plane 12":
                  LOGGER.info("Good flight, pilot !")
-                 os.system(r"C:\Program Files (x86)\Steam\steamapps\common\X-Plane 12\X-Plane.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "Minecraft":
                  Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/N)")
                  if Minecraft_mod == "N":
                     LOGGER.info("tun tun tun tun; tin tin tit; tan tan tan tan ")
                     gamemenu = 0
-                    os.system(r"C:\XboxGames\Minecraft_Launcher\Content\Minecraft.exe")
+                    os.system(r"")
                  else:
                      LOGGER.info("Launching mods ...")
-                     os.system(r"C:\Program Files (x86)\Overwolf\OverwolfLauncher.exe")
-             if gameorder == "exit()":
-                 gamemenu = 0
+                     os.system(r"")
              if gameorder == "CS2":
                  LOGGER.info("CS2 is unavailable, please re-install it before start")
                  #LOGGER.info("good suffering session with russians, bro")
@@ -338,15 +353,14 @@ while True:
                  LOGGER.info("...")
                  tm.sleep(3)
                  LOGGER.info("why not ...")
-                 os.system(r"C:\Users\Paul\AppData\Local\Roblox\Versions\version-31fc142272764f02\RobloxPlayerBeta.exe")
+                 os.system(r"")
                  gamemenu = 0
              if gameorder == "ng":
                  LOGGER.info("Go play good patriot !")
-                 os.system(r"C:\Users\Paul\AppData\Local\NationsGlory\NationsGlory.exe")
+                 os.system(r"")
     if order == "colony development assist":
         LOGGER.info("Welcome to the colony development assistant (not ai, just in python), type help for more info")
         coldevasist_st = 1
-        coldevassistorder = "nothing, bro"
         while coldevasist_st == 1:
             coldevassistorder = input("How can I help you today")
             if coldevassistorder == "ASCII repository":
@@ -431,9 +445,14 @@ while True:
                     LOGGER.info ("Hexadecimal : 48 \nBinary : 01001000 \nDescription : the uppercase h")
                 if ASCIIrep_ordr == "I":
                     LOGGER.info ("Hexadecimal : 49 \nBinary : 01001001 \nDescription : the uppercase i")
+            if coldevassistorder == "exit()":
+                coldevasist_st = 0
+            if coldevassistorder == "help":
+                LOGGER.info ("ASCII repository : a repository of all the symbols of you're keyboard with their hexadecimal, binary code and their description")
+                LOGGER.info ("exit() : exit from the app \n database : access to your script database \n help : you know")
             if coldevassistorder == "database":
-                databaseorder = input("Which data do you want ? (language, title")
-                if "pyhton" in databaseorder:
+                databaseorder = input("Which data do you want ? (language, title)")
+                if ("python") in databaseorder:
                     databaseorder_python = input("which script do you want to keep ?")
         LOGGER.info ("error : bash : command not found !")
     if order == "app launcher":
@@ -442,9 +461,13 @@ while True:
             os.system ("put internet.exe path here")
         if app_launch == "start server":
             LOGGER.info ("starting server ...")
-            os.system(r"C:\Users\Paul\Documents\Perso\Informatique\Serveur_create\run.bat")
-            os.system(r"C:\Users\Paul\Documents\Perso\Informatique\Serveur_Minecraft\bin\playit.exe")
+            # start in first the internet pipe like playit.gg
+            os.system(r"")
+            # finally, start the server with start.bat
+            os.system(r"")
             LOGGER.info ("server started")
+            if app_launch == "help":
+                LOGGER.info ("start server : start the Minecraft server and the internet pipe you configured \n internet : start an internet navigator")
 
     if order == "computer info":
          screen_monitoring_while = 1
@@ -524,15 +547,16 @@ while True:
     if order == "text_file.print":
         if safety_mode == 7:
             LOGGER.info ("Error 1 (win32print): Critical, CDOS will start in safety mode. Please retry later")
-        else :
-
-            try:
-                win32print.StartPagePrinter(printer_name)
-                win32print.WritePrinter(printer_name,txt_file)
-                win32print.EndPagePrinter(printer_name)
-            finally:
-                win32print.ClosePrinter(printer_name)
+            if os != "win32":
+                LOGGER.info ("Error ")
+            else:
+                try:
+                    win32print.StartPagePrinter(printer_name)
+                    win32print.WritePrinter(printer_name,txt_file)
+                    win32print.EndPagePrinter(printer_name)
+                finally:
+                    win32print.ClosePrinter(printer_name)
 
     if order == "fd backup":
-        if safety_mode ==4:
+        if safety_mode !=4:
             os.fsync()
