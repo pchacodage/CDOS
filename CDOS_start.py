@@ -2,6 +2,7 @@ print("Colony Developement")
 print("CDOS is starting")
 #put start code here
 safetymode = []
+#modules import and testing block
 def error_print (error_code,details,state):
     if error_code == 0:
         print ("Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
@@ -71,11 +72,37 @@ try:
 except ImportError:
     error_print(1,"sys","start")
     safetymode.append("8")
-file = ""
-game_to_exe = "nah bro"
-txt_file = open("file_editor.txt", "a")
-txt_file.write(str(file))
-txt_file.close()
+try:
+    import pickle
+except ImportError:
+    error_print(1,"pickle","start")
+    safetymode.append("9")
+
+try:
+    import io
+except ImportError:
+    safetymode.append("9")
+    error_print(1,"io","start")
+#definition of variables
+gmpth = {}
+try :
+    with open("gmpth.pickle","rb") as gmpth_io:
+        gmpth = pickle.load(gmpth_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for gmpth")
+else:
+    LOGGER.info("Save 1/4 found (gmpth.pickle)")
+    gmpth_io.close()
+
+try:
+   with open("txt_file.pickle","rb") as txt_file:
+        txt_file = pickle.load(txt_file)
+except:
+    LOGGER.error("Error 2: can't find save in range for text file")
+else:
+    LOGGER.info("Save 2/4 found (file_editor.txt)")
+    txt_file.close()
+
 if "7" not in safetymode and os == "win32":
     print()
     printer_name = win32print.GetDefaultPrinter()
@@ -85,35 +112,49 @@ else:
 
 #for the good version, replace . txt (except txt_file ) to .bin
 def saving():
-    sessions_file = open("saving(sessions).bin","w")
-    sessions_file.write(str(sessions))
-    sessions_file.close()
-    session_number_file = open("saving(session_number).txt","w")
-    session_number_file.write(str(session_number))
-    session_number_file.close()
-    passwords_file = open ("saving(passwords).bin","w")
-    passwords_file.write(str(passwords_file))
-    passwords_file.close()
-    txt_file = open("file_editor.txt", "a")
-    txt_file.write(str(file))
-    txt_file.close()
+    session_file_saving = open("saving(sessions).pickle","wb")
+    pickle.dump(sessions,"saving(sessions).pickle")
+    session_file_saving.close()
+    session_number_file_saving = open("saving(session_number);pickle","rb")
+    pickle.dump(session_number,"saving(session_number).pickle")
+    session_number_file_saving.close()
+    password_file_saving = open("saving(passwords).pickle","rb")
+    pickle.dump(password_file_saving,"saving(passwords).pickle")
+    password_file_saving.close()
+    gmpth_file_saving = open("saving(gmpth).pickle","rb")
+    pickle.dump(gmpth,saving(gmpth))
+    gmpth_file_saving.close()
 
 #set up sessions variables
-try : session_number_file = open("saving(session_number).bin","r")
+last_command = ""
+try :
+    with open("saving(session_number).pickle","rb") as saving_session_number_io:
+        saving
 except:
+    LOGGER.error("Error 2 : can't find save in range for sessions number")
     session_number = [1]
     password = ["no password"]
     sessions = ["nope"]
 else:
-    sessions_file = open("saving(sessions).bin","w")
-    sessions = [sessions_file]
-    sessions_file.close()
-    session_number_file = open("saving(session_number).bin","w")
-    session_number_file.close()
-    session_number = 1
-    passwords_file = open ("saving(passwords)","w")
-    passwords_file.close()
-    passwords = [passwords_file]
+    saving_session_number_io.close()
+    LOGGER.info("Save 1/6 found (session_number.bin)")
+try :
+    with open("saving(sessions).pickle","rb") as savingsessions_io:
+        sessions_file = pickle.load(savingsessions_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for sessions")
+else:
+    LOGGER.info("Save 2/6 found (sessions.bin)")
+    savingsessions_io.close()
+try:
+    with open("saving(passwords).pickle","rb") as passwords_file:
+        password = pickle.load(passwords_file)
+except :
+    LOGGER.error("Error 2 : can't find save in range for passwords")
+else:
+    LOGGER.info("Save 3/6 found (passwords.bin)")
+    passwords_file.CLOSE
+
 
 def shutdown(saving_bp):
     if saving_bp == 0:
@@ -128,9 +169,10 @@ def shutdown(saving_bp):
     else:
         LOGGER.info("forcing shuting down (without save) ...")
         tm.sleep(1/2)
-        exit()
 print ("os detected :",sys.platform)
 os = sys.platform
+
+tm.sleep(1/2)
 if sessions == "General" :
     session = input("wich session do you want to start (please enter the identifiant of session) ?")
 else:
@@ -142,9 +184,9 @@ else:
         mode = ("guest")
         sessionchoosed = ("guest")
     else:
-         LOGGER.info("critical error : answer not availaible")
+         LOGGER.info("critical error : answer not correct")
          tm.sleep(3)
-         shutdown(1)
+         shutdown(2)
 #end of starting
 
 
@@ -177,12 +219,12 @@ while True:
                         result = (first_number + second_number)
         LOGGER.info("the result is",result)
     if order == "help":
-        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know")
-        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
-        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \n SHUTDOWN : shutdown the system")
-        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \n Wait a minute ... : no desc \n clock : an app that makes clocks, calendar ...")
+        LOGGER.info("here's the list of all the commands: \ncalculator : a very basic calculator \nhelp : you know")
+        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\nclock : an app with a timer and a calendar for day")
+        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \nSHUTDOWN : shutdown the system")
+        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \nWait a minute ... : no desc \nclock : an app that makes clocks, calendar ...")
         LOGGER.info ("games : a menu to launch games from you computer (only works if setted up)")
-        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \n app launcher : a launcher for regular apps")
+        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \napp launcher : a launcher for regular apps")
         if os == "win32":
             LOGGER.info ("text_file.print : command that prints your text from the text editor to a paper printer")
         LOGGER.info ("fd backup : a system for backup floppy disks (forcing the system to copy files from fd to disk, in CDOS file)")
@@ -209,8 +251,8 @@ while True:
                 while settings == 1:
                     order_settings = input("what do you want ?")
                     if order_settings == ("help"):
-                        LOGGER.info("here's the list of the commands : help : you know \n sessions : for create, delete and modify the sessions \n cdos.safetymode.bypass : bypass the safetymode (debugging)")
-                        LOGGER.info("exit() : exit from this app \n admin access : debugging and core's functions")
+                        LOGGER.info("here's the list of the commands : help : you know \nsessions : for create, delete and modify the sessions \ncdos.safetymode.bypass : bypass the safetymode (debugging)")
+                        LOGGER.info("exit() : exit from this app \nadmin access : debugging and core's functions")
                     if order_settings == ("sessions"):
                         if 1 in session_number:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
@@ -255,16 +297,36 @@ while True:
                         adminaccess_order = input(f"computer/{sessionchoosed}/admin_panel>")
                         if adminaccess_order == "fl.close":
                             sessions_file.close()
-                            session_number_file.close()
+                            session_number.close()
                             passwords_file.close()
                             txt_file.close()
                         if adminaccess_order == "variables.print":
                             LOGGER.info("Here's the list of all the system's variables")
                             LOGGER.info
                         if adminaccess_order == "safetymode.bypass":
-                            safetymode.clear
+                            safetymode = []
                             LOGGER.info("Safetymode has been disabled !")
-
+                    if order_settings == "games config":
+                        LOGGER.info("\nHere's the list of all the games configured")
+                        game_config = 1
+                    #put the loop for k in range  to show all the path for the games
+                        while game_config == 1:
+                            gm_cnfg_ordr= input("What game config do you want to modify ?")
+                            if gm_cnfg_ordr == "help":
+                                LOGGER.info("add : add a new game to the config\nmodify : modify a game config\nhelp : show the help menu (this commmand)")
+                            if gm_cnfg_ordr == "add":
+                                nw_gm_nm = input("please enter the name of the game")
+                                nw_gm_pth = input("please enter the path of the game")
+                                gmpth[str(nw_gm_nm)]= nw_gm_pth
+                                print(f"the game", nw_gm_nm,"at the path",nw_gm_pth,"has succefully been added")
+                            if gm_cnfg_ordr == "modify":
+                                gm_cnfg_mdf = str(input("please enter the name of the game"))
+                                try:
+                                    gm_cnfg_pth = input("please enter the name of the game") in gmpth
+                                except:
+                                    LOGGER.error("Error 2 : game not found")
+                                else:
+                                    LOGGER.info ("game found !")
 
     if order == "text editor":
         if file == "":
@@ -285,7 +347,7 @@ while True:
         while clock == 1:
             clock_order = input ("What do you want")
             if clock_order == "help":
-                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today \n exit() : exit from the clock menu")
+                LOGGER.info("here's the list of the command:\nhelp : you know\ntimer : a timer\ncalendar : a calendar for today \nexit() : exit from the clock menu")
             if clock_order == "timer":
                 timer_sec = input ("How Many second do you want ?")
                 timer_minute = input("how many minutes do you want ?")
@@ -314,9 +376,9 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
-                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu")
-                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \n Roblox : start roblox \n ng : start the nationsglory launcher")
-                 LOGGER.info("Minecraft : launch the Minecraft launcher \n CS2 : starts Counter-strike2")
+                 LOGGER.info ("here the list of the differents commands : \nwt : starts war thunder \nhelp : you know \nexit() : exit from the game menu")
+                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \nRoblox : start roblox \nng : start the nationsglory launcher")
+                 LOGGER.info("Minecraft : launch the Minecraft launcher \nCS2 : starts Counter-strike2")
              if gameorder == "exit()":
                  gamemenu = 0
              if gameorder == "X-plane 12":
@@ -324,8 +386,8 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "Minecraft":
-                 Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/N)")
-                 if Minecraft_mod == "N":
+                 Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/n)")
+                 if Minecraft_mod == "n":
                     LOGGER.info("tun tun tun tun; tin tin tit; tan tan tan tan ")
                     gamemenu = 0
                     os.system(r"")
