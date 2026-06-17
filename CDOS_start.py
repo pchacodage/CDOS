@@ -1,3 +1,4 @@
+
 print("Colony Developement")
 print("CDOS is starting")
 #put start code here
@@ -83,15 +84,16 @@ try:
 except ImportError:
     safetymode.append("9")
     error_print(1,"io","start")
-#definition of variables
+#definition of variables and saves import
 gmpth = {}
+last_command = ""
 try :
     with open("gmpth.pickle","rb") as gmpth_io:
         gmpth = pickle.load(gmpth_io)
 except:
     LOGGER.error("Error 2 : can't find save in range for gmpth")
 else:
-    LOGGER.info("Save 1/4 found (gmpth.pickle)")
+    LOGGER.info("Save 1/6 found (gmpth.pickle)")
     gmpth_io.close()
 
 try:
@@ -99,9 +101,49 @@ try:
         txt_file = pickle.load(txt_file)
 except:
     LOGGER.error("Error 2: can't find save in range for text file")
+    file = ""
 else:
-    LOGGER.info("Save 2/4 found (file_editor.txt)")
+    LOGGER.info("Save 2/6 found (file_editor.txt)")
     txt_file.close()
+
+try :
+    with open("saving(session_number).pickle","rb") as saving_session_number_io:
+        saving_sesion_number = pickle.load(saving_session_number_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for sessions number")
+    session_number = [1]
+    password = ["no password"]
+    sessions = ["General"]
+else:
+    saving_session_number_io.close()
+    LOGGER.info("Save 3/6 found (session_number.bin)")
+try :
+    with open("saving(sessions).pickle","rb") as savingsessions_io:
+        sessions_file = pickle.load(savingsessions_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for sessions")
+    sessions = ["General"]
+else:
+    LOGGER.info("Save 4/6 found (sessions.bin)")
+    savingsessions_io.close()
+try:
+    with open("saving(passwords).pickle","rb") as passwords_file:
+        password = pickle.load(passwords_file)
+except :
+    LOGGER.error("Error 2 : can't find save in range for passwords")
+else:
+    LOGGER.info("Save 5/6 found (passwords.bin)")
+    passwords_file.close()
+
+try:
+    with open("APP_PATH.pickle","rb") as app_path_io:
+        app_path = pickle.load(app_path_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for app launcher path")
+    app_path = [""]
+else:
+    LOGGER.info("Save 6/6 found (app_path.pickle)")
+    app_path_io.close()
 
 if "7" not in safetymode and os == "win32":
     print()
@@ -110,52 +152,26 @@ if "7" not in safetymode and os == "win32":
 else:
     error_print(1,"win32print","during")
 
-#for the good version, replace . txt (except txt_file ) to .bin
 def saving():
-    session_file_saving = open("saving(sessions).pickle","wb")
-    pickle.dump(sessions,"saving(sessions).pickle")
+    session_file_saving = open("saving(sessions).pickle","w+b")
+    with open("saving(sessions).pickle","+wb") as sessions_io:
+        pickle.dump(sessions,sessions_io)
     session_file_saving.close()
-    session_number_file_saving = open("saving(session_number);pickle","rb")
-    pickle.dump(session_number,"saving(session_number).pickle")
-    session_number_file_saving.close()
-    password_file_saving = open("saving(passwords).pickle","rb")
-    pickle.dump(password_file_saving,"saving(passwords).pickle")
-    password_file_saving.close()
-    gmpth_file_saving = open("saving(gmpth).pickle","rb")
-    pickle.dump(gmpth,saving(gmpth))
-    gmpth_file_saving.close()
+    with open ("saving(session_number).pickle","w+b") as session_number_io:
+        pickle.dump(session_number,session_number_io)
+    session_number_io.close()
+    with open("saving(session_passwords).pickle","w+b") as session_passwords_io:
+        pickle.dump(password,session_passwords_io)
+        session_passwords_io.close()
+    #gmpth_file_saving = open("saving(gmpth).pickle","rb")
+    with open("saving(gmpth).pickle","w+b") as gmpth_io:
+        pickle.dump(gmpth,gmpth_io)
+        gmpth_io.close()
 
 #set up sessions variables
-last_command = ""
-try :
-    with open("saving(session_number).pickle","rb") as saving_session_number_io:
-        saving
-except:
-    LOGGER.error("Error 2 : can't find save in range for sessions number")
-    session_number = [1]
-    password = ["no password"]
-    sessions = ["nope"]
-else:
-    saving_session_number_io.close()
-    LOGGER.info("Save 1/6 found (session_number.bin)")
-try :
-    with open("saving(sessions).pickle","rb") as savingsessions_io:
-        sessions_file = pickle.load(savingsessions_io)
-except:
-    LOGGER.error("Error 2 : can't find save in range for sessions")
-else:
-    LOGGER.info("Save 2/6 found (sessions.bin)")
-    savingsessions_io.close()
-try:
-    with open("saving(passwords).pickle","rb") as passwords_file:
-        password = pickle.load(passwords_file)
-except :
-    LOGGER.error("Error 2 : can't find save in range for passwords")
-else:
-    LOGGER.info("Save 3/6 found (passwords.bin)")
-    passwords_file.CLOSE
 
-
+apps_number = 5
+str_bug_fixer = ""
 def shutdown(saving_bp):
     if saving_bp == 0:
         LOGGER.info("system is saving ...")
@@ -313,7 +329,7 @@ while True:
                         while game_config == 1:
                             gm_cnfg_ordr= input("What game config do you want to modify ?")
                             if gm_cnfg_ordr == "help":
-                                LOGGER.info("add : add a new game to the config\nmodify : modify a game config\nhelp : show the help menu (this commmand)")
+                                LOGGER.info("add : add a new game to the config\nmodify : modify a game config\nhelp : show the help menu (this commmand)\nexit() : escape from this program")
                             if gm_cnfg_ordr == "add":
                                 nw_gm_nm = input("please enter the name of the game")
                                 nw_gm_pth = input("please enter the path of the game")
@@ -327,6 +343,28 @@ while True:
                                     LOGGER.error("Error 2 : game not found")
                                 else:
                                     LOGGER.info ("game found !")
+                            if gm_cnfg_ordr == "exit()":
+                                game_config = 0
+
+                    if order_settings == "apps config":
+                        apps_config_while = 1
+                        LOGGER.info("\nHere's the list of all the apps configured")
+                        k = 0
+                        tm.sleep(1/2)
+                        #for k in range (apps_number):
+                            #LOGGER.info(app_path(k))
+                            #k = k+1
+                        while apps_config_while == 1:
+                            apps_config_order = input("what do you want ?")
+                            if apps_config_order == "help":
+                                LOGGER.info("add : add a new app to the config")
+                            if apps_config_order == "add":
+                                new_app_name = input("please enter the name of the new app")
+                                new_app_path = input("please enter the path of the new app")
+                                #both varibles are str
+                                app_path.append[new_app_name]= new_app_path
+                                print("the app ",new_app_name,"with the path",new_app_path,"has been added")
+
 
     if order == "text editor":
         if file == "":
