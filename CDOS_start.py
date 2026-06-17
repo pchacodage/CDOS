@@ -93,7 +93,7 @@ try :
 except:
     LOGGER.error("Error 2 : can't find save in range for gmpth")
 else:
-    LOGGER.info("Save 1/6 found (gmpth.pickle)")
+    LOGGER.info("Save 1/7 found (gmpth.pickle)")
     gmpth_io.close()
 
 try:
@@ -103,7 +103,7 @@ except:
     LOGGER.error("Error 2: can't find save in range for text file")
     file = ""
 else:
-    LOGGER.info("Save 2/6 found (file_editor.txt)")
+    LOGGER.info("Save 2/7 found (file_editor.txt)")
     txt_file.close()
 
 try :
@@ -116,7 +116,7 @@ except:
     sessions = ["General"]
 else:
     saving_session_number_io.close()
-    LOGGER.info("Save 3/6 found (session_number.bin)")
+    LOGGER.info("Save 3/7 found (session_number.bin)")
 try :
     with open("saving(sessions).pickle","rb") as savingsessions_io:
         sessions_file = pickle.load(savingsessions_io)
@@ -124,7 +124,7 @@ except:
     LOGGER.error("Error 2 : can't find save in range for sessions")
     sessions = ["General"]
 else:
-    LOGGER.info("Save 4/6 found (sessions.bin)")
+    LOGGER.info("Save 4/7 found (sessions.bin)")
     savingsessions_io.close()
 try:
     with open("saving(passwords).pickle","rb") as passwords_file:
@@ -132,18 +132,27 @@ try:
 except :
     LOGGER.error("Error 2 : can't find save in range for passwords")
 else:
-    LOGGER.info("Save 5/6 found (passwords.bin)")
+    LOGGER.info("Save 5/7 found (passwords.bin)")
     passwords_file.close()
 
 try:
-    with open("APP_PATH.pickle","rb") as app_path_io:
+    with open("app_path.pickle","rb") as app_path_io:
         app_path = pickle.load(app_path_io)
 except:
     LOGGER.error("Error 2 : can't find save in range for app launcher path")
-    app_path = [""]
+    app_path = {}
 else:
-    LOGGER.info("Save 6/6 found (app_path.pickle)")
+    LOGGER.info("Save 6/7 found (app_path.pickle)")
     app_path_io.close()
+
+try:
+    with open("script_database.pickle","rb") as script_database_io:
+        script_database = pickle.load(script_database_io)
+except:
+    LOGGER.error("Error 2 : can't find save in range for script database")
+    script_database = {}
+else:
+    LOGGER.info("Save 7/7 found (script database)")
 
 if "7" not in safetymode and os == "win32":
     print()
@@ -156,21 +165,36 @@ def saving():
     session_file_saving = open("saving(sessions).pickle","w+b")
     with open("saving(sessions).pickle","+wb") as sessions_io:
         pickle.dump(sessions,sessions_io)
+        LOGGER.info("sessions saved (1/7)")
     session_file_saving.close()
     with open ("saving(session_number).pickle","w+b") as session_number_io:
         pickle.dump(session_number,session_number_io)
+        LOGGER.info("session_number saved (2/7)")
     session_number_io.close()
     with open("saving(session_passwords).pickle","w+b") as session_passwords_io:
         pickle.dump(password,session_passwords_io)
+        LOGGER.info("passwords saved (3/7)")
         session_passwords_io.close()
     #gmpth_file_saving = open("saving(gmpth).pickle","rb")
-    with open("saving(gmpth).pickle","w+b") as gmpth_io:
+    with open("saving(games_config).pickle","w+b") as gmpth_io:
         pickle.dump(gmpth,gmpth_io)
+        LOGGER.info("games config saved (4/7)")
         gmpth_io.close()
+    with open("saving(app_path).pickle","w+b") as app_path_io:
+        pickle.dump(app_path,app_path_io)
+        LOGGER.info("app path saved (5/7)")
+        app_path_io.close()
+    with open("saving(script_database).pickle","w+b") as script_database_io:
+        pickle.dump(script_database,script_database_io)
+        LOGGER.info("script database saved (6/7)")
+        script_database_io.close()
+    with open ("saving(text_file).pickle","w+b") as text_file_io:
+        pickle.dump(file,text_file_io)
+        LOGGER.info("text file saved (7/7)")
+        text_file_io.close()
 
 #set up sessions variables
 
-apps_number = 5
 str_bug_fixer = ""
 def shutdown(saving_bp):
     if saving_bp == 0:
@@ -187,7 +211,6 @@ def shutdown(saving_bp):
         tm.sleep(1/2)
 print ("os detected :",sys.platform)
 os = sys.platform
-
 tm.sleep(1/2)
 if sessions == "General" :
     session = input("wich session do you want to start (please enter the identifiant of session) ?")
@@ -349,11 +372,8 @@ while True:
                     if order_settings == "apps config":
                         apps_config_while = 1
                         LOGGER.info("\nHere's the list of all the apps configured")
-                        k = 0
                         tm.sleep(1/2)
-                        #for k in range (apps_number):
-                            #LOGGER.info(app_path(k))
-                            #k = k+1
+                        LOGGER.info(app_path)
                         while apps_config_while == 1:
                             apps_config_order = input("what do you want ?")
                             if apps_config_order == "help":
@@ -362,7 +382,8 @@ while True:
                                 new_app_name = input("please enter the name of the new app")
                                 new_app_path = input("please enter the path of the new app")
                                 #both varibles are str
-                                app_path.append[new_app_name]= new_app_path
+                                #LOGGER.error("function doesn't work for now due to miscellanous reasons")
+                                app_path[new_app_name]= new_app_path
                                 print("the app ",new_app_name,"with the path",new_app_path,"has been added")
 
 
@@ -414,9 +435,8 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
-                 LOGGER.info ("here the list of the differents commands : \nwt : starts war thunder \nhelp : you know \nexit() : exit from the game menu")
-                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \nRoblox : start roblox \nng : start the nationsglory launcher")
-                 LOGGER.info("Minecraft : launch the Minecraft launcher \nCS2 : starts Counter-strike2")
+                 LOGGER.info ("just enter the name of the game to execute it, here's the lists of all the games")
+                 LOGGER.info(gmpth)
              if gameorder == "exit()":
                  gamemenu = 0
              if gameorder == "X-plane 12":
@@ -550,14 +570,12 @@ while True:
             os.system ("put internet.exe path here")
         if app_launch == "start server":
             LOGGER.info ("starting server ...")
-            # start in first the internet pipe like playit.gg
             os.system(r"")
-            # finally, start the server with start.bat
             os.system(r"")
             LOGGER.info ("server started")
             if app_launch == "help":
-                LOGGER.info ("start server : start the Minecraft server and the internet pipe you configured \n internet : start an internet navigator")
-
+                LOGGER.info ("just type the name of the app and it will execute it, here's the list of all the apps configured")
+                LOGGER.info(app_path)
     if order == "computer info":
          screen_monitoring_while = 1
          if "5" in safetymode:
@@ -588,8 +606,8 @@ while True:
              if screen_monitoring_order == "cpu":
                 cores_physiques = psutil.cpu_count(logical=False)
                 cores_logiques = psutil.cpu_count(logical=True)
-                LOGGER.info("Cœurs physiques :", cores_physiques)
-                LOGGER.info("Cœurs logiques   :", cores_logiques)
+                print("Cœurs physiques :", cores_physiques)
+                print("Cœurs logiques   :", cores_logiques)
                 freq = psutil.cpu_freq()
                 if freq:
                     print(f"Fréquence actuelle : {freq.current} MHz")
