@@ -18,9 +18,15 @@
     - ~~#### add the save of the paths in another saving file (named gmpth.bin and apppth.bin)~~
   - ### ~~re-configure the help app to handle the dictionnary of all the path~~
 - ## ~~fixing the computer info command by replacing all the loggers by print~~
-- ## adding a system to add elements to the database of the coldev assist
+- ## ~~adding a system to add elements to the database of the coldev assist~~
 - ## change the color of the logging in function of the situation
 - ## code the sessions sys
 - ## integrate the error code n2 in the error print function
 - ## cleaning update : make everything more clean in the console and beauty/rename the variable to be more developper-freindly
+  - ### add a space between two different saves of the text editor
+  - ### make the "none" printed sometimes in the console go
 - ## finish the print all variables function in the admin panel
+- ## add a self-test system in admin panel and at the start
+- ## delete session_numbr and replaceit by len(sessions)
+  
+- ## Create an SML ?

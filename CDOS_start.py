@@ -1,29 +1,42 @@
 
 print("Colony Developement")
 print("CDOS is starting")
+#import colorama here because usefull
+try:
+    import colorama
+except ImportError:
+    print("ERROR 0 : Critical, please refer to the error manual, CDOS will shutdown")
+    exit("ModuleImport error : Colorama module failed to import")
+else:
+    from colorama import Style, Fore
+    print(Fore.GREEN+"import of colorama module success")
 #put start code here
 safetymode = []
 #modules import and testing block
 def error_print (error_code,details,state):
     if error_code == 0:
-        print ("Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
-        exit("Bash error : logging import error (code 0)")
+        print (Fore.YELLOW+"Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
+        exit("ModuleImport error : ",details," import error (code 0)")
     if error_code == 1:
         if state == "start":
-            print("Error 1 (",details,"): critical, CDOS will start in safety mode.")
+            print(Fore.YELLOW+"Error 1 (",details,"): critical, CDOS will start in safety mode.\nPlease refer to the error manual")
         if state == "during":
-            print("Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later")
+            print(Fore.YELLOW+"Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later and refer to the error manual")
 try:
     import time as tm
 except ImportError:
     error_print(1,"time","start")
     safetymode.append("1")
+else:
+    print("import of time module success")
 
 try:
     import datetime
 except ImportError:
     error_print(1,"datetime","start")
     safetymode.append("2")
+else:
+    print("import of datetime module success")
 
 #import math
 
@@ -32,6 +45,8 @@ try:
 except ImportError:
     error_print(1,"random","start")
     safetymode.append("3")
+else :
+    print("import of random module success")
 
 try:
     import logging
@@ -41,23 +56,31 @@ else:
     LOGGER: logging.Logger = logging.getLogger(__name__)
     LOGGER.addHandler(logging.StreamHandler())
     LOGGER.setLevel(logging.INFO)
+    print("import of logger success")
 
 try:
     import os
 except ImportError:
     error_print(1,"os","start")
     safetymode.append("4")
+else:
+    print("import of os module success")
 
 try:
     import psutil
 except ImportError:
     error_print(1,"psutil","start")
     safetymode.append("5")
+else:
+    print("import of psutil module success")
+
 try:
     import sys
 except ImportError:
     error_print(1,"sys","start")
     safetymode.append("6")
+else:
+    print("import of sys module success")
 
 if os == "win32":
     try:
@@ -65,157 +88,163 @@ if os == "win32":
     except ImportError:
         safetymode.append("7")
         error_print(1,"win32print","start")
-else :
-    safetymode.append("7")
-    error_print(1, "win32print", "start")
-try:
-    import sys
-except ImportError:
-    error_print(1,"sys","start")
-    safetymode.append("8")
+    else :
+        error_print(1, "win32print", "start")
+        print(Fore.GREEN+"import of win32 success")
+
 try:
     import pickle
 except ImportError:
     error_print(1,"pickle","start")
-    safetymode.append("9")
+    safetymode.append("8")
+else:
+    print("import of pickle module success")
 
 try:
     import io
 except ImportError:
     safetymode.append("9")
     error_print(1,"io","start")
+else:
+    print("import of io module success")
+
 #definition of variables and saves import
 gmpth = {}
 last_command = ""
 try :
-    with open("gmpth.pickle","rb") as gmpth_io:
+    with open("saving(app_path).pickle","rb") as gmpth_io:
         gmpth = pickle.load(gmpth_io)
 except:
-    LOGGER.error("Error 2 : can't find save in range for gmpth")
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for games config")
 else:
-    LOGGER.info("Save 1/7 found (gmpth.pickle)")
+    LOGGER.info(Fore.GREEN + "Save 1/7 found (saving(app_path).pickle)")
     gmpth_io.close()
 
 try:
-   with open("txt_file.pickle","rb") as txt_file:
-        txt_file = pickle.load(txt_file)
+   with open("saving(text_file).pickle","rb") as txt_file_io:
+        txt_file = pickle.load(txt_file_io)
 except:
-    LOGGER.error("Error 2: can't find save in range for text file")
+    LOGGER.error(Fore.YELLOW+"Error 2: can't find save in range for text file")
     file = ""
 else:
-    LOGGER.info("Save 2/7 found (file_editor.txt)")
-    txt_file.close()
+    file = txt_file
+    LOGGER.info(Fore.GREEN + "Save 2/7 found (saving(text_file).pickle)")
+    txt_file_io.close()
 
 try :
     with open("saving(session_number).pickle","rb") as saving_session_number_io:
-        saving_sesion_number = pickle.load(saving_session_number_io)
+        saving_session_number = pickle.load(saving_session_number_io)
 except:
-    LOGGER.error("Error 2 : can't find save in range for sessions number")
-    session_number = [1]
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_number).pickle")
+    session_number = 1
     password = ["no password"]
     sessions = ["General"]
 else:
+    session_number = saving_session_number
     saving_session_number_io.close()
-    LOGGER.info("Save 3/7 found (session_number.bin)")
+    LOGGER.info(Fore.GREEN + "Save 3/7 found (session_number.bin)")
 try :
     with open("saving(sessions).pickle","rb") as savingsessions_io:
         sessions_file = pickle.load(savingsessions_io)
 except:
-    LOGGER.error("Error 2 : can't find save in range for sessions")
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for sessions")
     sessions = ["General"]
 else:
-    LOGGER.info("Save 4/7 found (sessions.bin)")
+    sessions = sessions_file
+    LOGGER.info(Fore.GREEN + "Save 4/7 found (sessions.bin)")
     savingsessions_io.close()
 try:
-    with open("saving(passwords).pickle","rb") as passwords_file:
+    with open("saving(session_passwords).pickle","rb") as passwords_file:
         password = pickle.load(passwords_file)
 except :
-    LOGGER.error("Error 2 : can't find save in range for passwords")
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_passwords).pickle")
 else:
-    LOGGER.info("Save 5/7 found (passwords.bin)")
+    LOGGER.info(Fore.GREEN + "Save 5/7 found (passwords.bin)")
     passwords_file.close()
 
 try:
-    with open("app_path.pickle","rb") as app_path_io:
+    with open("saving(app_path).pickle","rb") as app_path_io:
         app_path = pickle.load(app_path_io)
 except:
-    LOGGER.error("Error 2 : can't find save in range for app launcher path")
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for app launcher path")
     app_path = {}
 else:
-    LOGGER.info("Save 6/7 found (app_path.pickle)")
+    LOGGER.info(Fore.GREEN + "Save 6/7 found (saving(app_path).pickle)")
     app_path_io.close()
 
 try:
-    with open("script_database.pickle","rb") as script_database_io:
+    with open("saving(script_database).pickle","rb") as script_database_io:
         script_database = pickle.load(script_database_io)
 except:
-    LOGGER.error("Error 2 : can't find save in range for script database")
+    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for script database")
     script_database = {}
 else:
-    LOGGER.info("Save 7/7 found (script database)")
+    LOGGER.info(Fore.GREEN + "Save 7/7 found (saving(script_database).pickle)")
 
 if "7" not in safetymode and os == "win32":
-    print()
     printer_name = win32print.GetDefaultPrinter()
-    print ("default printer is ", printer_name)
+    print (Fore.GREEN+"default printer is ", printer_name)
 else:
     error_print(1,"win32print","during")
 
 def saving():
-    session_file_saving = open("saving(sessions).pickle","w+b")
-    with open("saving(sessions).pickle","+wb") as sessions_io:
-        pickle.dump(sessions,sessions_io)
-        LOGGER.info("sessions saved (1/7)")
-    session_file_saving.close()
-    with open ("saving(session_number).pickle","w+b") as session_number_io:
-        pickle.dump(session_number,session_number_io)
-        LOGGER.info("session_number saved (2/7)")
-    session_number_io.close()
-    with open("saving(session_passwords).pickle","w+b") as session_passwords_io:
-        pickle.dump(password,session_passwords_io)
-        LOGGER.info("passwords saved (3/7)")
-        session_passwords_io.close()
-    #gmpth_file_saving = open("saving(gmpth).pickle","rb")
-    with open("saving(games_config).pickle","w+b") as gmpth_io:
-        pickle.dump(gmpth,gmpth_io)
-        LOGGER.info("games config saved (4/7)")
-        gmpth_io.close()
-    with open("saving(app_path).pickle","w+b") as app_path_io:
-        pickle.dump(app_path,app_path_io)
-        LOGGER.info("app path saved (5/7)")
-        app_path_io.close()
-    with open("saving(script_database).pickle","w+b") as script_database_io:
-        pickle.dump(script_database,script_database_io)
-        LOGGER.info("script database saved (6/7)")
-        script_database_io.close()
-    with open ("saving(text_file).pickle","w+b") as text_file_io:
-        pickle.dump(file,text_file_io)
-        LOGGER.info("text file saved (7/7)")
-        text_file_io.close()
+    if 8 not in safetymode:
+        session_file_saving = open("saving(sessions).pickle","w+b")
+        with open("saving(sessions).pickle","+wb") as sessions_io:
+            pickle.dump(sessions,sessions_io)
+            LOGGER.info(Fore.GREEN+"sessions saved (1/7)")
+            sessions_io.close()
+        session_file_saving.close()
+        with open ("saving(session_number).pickle","w+b") as session_number_io:
+            pickle.dump(session_number,session_number_io)
+            LOGGER.info(Fore.GREEN+"session_number saved (2/7)")
+            session_number_io.close()
+        session_number_io.close()
+        with open("saving(session_passwords).pickle","w+b") as session_passwords_io:
+            pickle.dump(password,session_passwords_io)
+            LOGGER.info(Fore.GREEN+"passwords saved (3/7)")
+            session_passwords_io.close()
+        with open("saving(games_config).pickle","w+b") as gmpth_io:
+            pickle.dump(gmpth,gmpth_io)
+            LOGGER.info(Fore.GREEN+"games config saved (4/7)")
+            gmpth_io.close()
+        with open("saving(app_path).pickle","w+b") as app_path_io:
+            pickle.dump(app_path,app_path_io)
+            LOGGER.info(Fore.GREEN+"app path saved (5/7)")
+            app_path_io.close()
+        with open("saving(script_database).pickle","w+b") as script_database_io:
+            pickle.dump(script_database,script_database_io)
+            LOGGER.info(Fore.GREEN+"script database saved (6/7)")
+            script_database_io.close()
+        with open ("saving(text_file).pickle","w+b") as text_file_io:
+            pickle.dump(file,text_file_io)
+            LOGGER.info(Fore.GREEN+"text file saved (7/7)")
+            text_file_io.close()
 
 #set up sessions variables
 
 str_bug_fixer = ""
 def shutdown(saving_bp):
     if saving_bp == 0:
-        LOGGER.info("system is saving ...")
+        LOGGER.info(Fore.GREEN+"system is saving ...")
         saving()
-        LOGGER.info ("system is saved !")
-        LOGGER.info("system downing ...")
+        LOGGER.info (Fore.GREEN+"system is saved !")
+        LOGGER.info(Fore.GREEN+"system downing ...")
         tm.sleep (3)
-        LOGGER.info("system down !")
+        print("system down !")
         tm.sleep(1/2)
         exit()
     else:
-        LOGGER.info("forcing shuting down (without save) ...")
+        LOGGER.info(Fore.RED+"forcing shuting down (without save) ...")
         tm.sleep(1/2)
-print ("os detected :",sys.platform)
+        exit()
+print (Fore.GREEN+"os detected :",sys.platform)
 os = sys.platform
 tm.sleep(1/2)
 if sessions == "General" :
-    session = input("wich session do you want to start (please enter the identifiant of session) ?")
+    session = input(Fore.GREEN+"wich session do you want to start (please enter the identifiant of session) ?")
 else:
-    mode = input("Do you want to run Normal or Guest ? (N/G) ")
+    mode = input(Fore.GREEN+"Do you want to run Normal or Guest ? (N/G) ")
     if mode == "N":
         mode = ("admin")
         sessionchoosed = ("general")
@@ -223,7 +252,7 @@ else:
         mode = ("guest")
         sessionchoosed = ("guest")
     else:
-         LOGGER.info("critical error : answer not correct")
+         LOGGER.error("critical error : answer not correct")
          tm.sleep(3)
          shutdown(2)
 #end of starting
@@ -231,7 +260,7 @@ else:
 
 LOGGER.info("CDOS is started")
 while True:
-    order = input(LOGGER.info(f"computer/{sessionchoosed}>"))
+    order = input(LOGGER.info(Fore.GREEN + f"computer/{sessionchoosed}>"))
     if order == "calculator":
         easter_egg = rnd.randint(1,100)
         LOGGER.info(easter_egg)
@@ -559,6 +588,12 @@ while True:
             if coldevassistorder == "help":
                 LOGGER.info ("ASCII repository : a repository of all the symbols of you're keyboard with their hexadecimal, binary code and their description")
                 LOGGER.info ("exit() : exit from the app \n database : access to your script database \n help : you know")
+            if coldevassistorder == "script_database.add":
+                new_script_name = input("Please name your script")
+                new_script = input("Please enter the script here")
+                script_database[new_script_name] = new_script
+                LOGGER.info ("the script has succefully been added to the database")
+                tm.sleep(1 / 2)
             if coldevassistorder == "database":
                 databaseorder = input("Which data do you want ? (language, title)")
                 if ("python") in databaseorder:
@@ -630,6 +665,7 @@ while True:
                 disk_io = psutil.disk_io_counters()
                 LOGGER.info("Lectures :", disk_io.read_bytes, "octets")
                 LOGGER.info("Écritures :", disk_io.write_bytes, "octets")
+                tm.sleep(1)
              if screen_monitoring_order == "internet":
                  net_if_addrs = psutil.net_if_addrs()
                  for interface_name, interface_addresses in net_if_addrs.items():
