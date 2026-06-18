@@ -19,9 +19,11 @@ def error_print (error_code,details,state):
         exit("ModuleImport error : ",details," import error (code 0)")
     if error_code == 1:
         if state == "start":
-            print(Fore.YELLOW+"Error 1 (",details,"): critical, CDOS will start in safety mode.\nPlease refer to the error manual")
+            print(Fore.YELLOW+"Error 1 (",details,"): warning, CDOS will start in safety mode.\nPlease refer to the error manual")
         if state == "during":
-            print(Fore.YELLOW+"Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later and refer to the error manual")
+            print(Fore.YELLOW+"Error 1","(",details,"): warning, CDOS  has started in safety mode, so you can't access to this function for now, please retry later and refer to the error manual")
+    if error_code == 2:
+        print(Fore.YELLOW+"Error 2 : Can't find '",details,"' in range")
 try:
     import time as tm
 except ImportError:
@@ -124,7 +126,7 @@ try :
     with open("saving(app_path).pickle","rb") as gmpth_io:
         gmpth = pickle.load(gmpth_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for games config")
+    error_print(2,"saving(app path)",None)
 else:
     LOGGER.info(Fore.GREEN + "Save 1/7 found (saving(app_path).pickle)")
     gmpth_io.close()
@@ -133,7 +135,7 @@ try:
    with open("saving(text_file).pickle","rb") as txt_file_io:
         txt_file = pickle.load(txt_file_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2: can't find save in range for text file")
+    error_print(2,"saving(text file)",None)
     file = ""
 else:
     file = txt_file
@@ -144,7 +146,7 @@ try :
     with open("saving(session_number).pickle","rb") as saving_session_number_io:
         saving_session_number = pickle.load(saving_session_number_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_number).pickle")
+    error_print(2,"saving(session_number)",None)
     session_number = 1
     password = [""]
     sessions = [""]
@@ -156,7 +158,7 @@ try :
     with open("saving(sessions).pickle","rb") as savingsessions_io:
         sessions_file = pickle.load(savingsessions_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for sessions")
+    error_print(2,"saving(sessions)",None)
     sessions = [""]
 else:
     sessions = sessions_file
@@ -166,7 +168,7 @@ try:
     with open("saving(session_passwords).pickle","rb") as passwords_file:
         password = pickle.load(passwords_file)
 except :
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_passwords).pickle")
+    error_print(2,"saving(session_passwords)",None)
     password = [""]
 else:
     LOGGER.info(Fore.GREEN + "Save 5/7 found (passwords.bin)")
@@ -176,7 +178,7 @@ try:
     with open("saving(app_path).pickle","rb") as app_path_io:
         app_path = pickle.load(app_path_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for app launcher path")
+    error_print(2,"saving(app_path)",None)
     app_path = {}
 else:
     LOGGER.info(Fore.GREEN + "Save 6/7 found (saving(app_path).pickle)")
@@ -186,7 +188,7 @@ try:
     with open("saving(script_database).pickle","rb") as script_database_io:
         script_database = pickle.load(script_database_io)
 except:
-    LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for script database")
+    error_print(2,"saving(script_database)",None)
     script_database = {}
 else:
     LOGGER.info(Fore.GREEN + "Save 7/7 found (saving(script_database).pickle)")

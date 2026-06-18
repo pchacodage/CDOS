@@ -21,7 +21,7 @@
 - ## ~~adding a system to add elements to the database of the coldev assist~~
 - ## ~~change the color of the logging in function of the situation~~
 - ## ~~code the sessions sys~~
-- ## integrate the error code n2 in the error print function
+- ## ~~integrate the error code n2 in the error print function~~
 - ## cleaning update : make everything more clean in the console and beauty/rename the variable to be more developper-freindly
   - ### add a space between two different saves of the text editor
   - ### make the "none" printed sometimes in the console go
@@ -30,4 +30,4 @@
 - ## delete session_numbr and replace it by len(sessions)
 - ## Create an SLM (Small Language Model) ?
 - ## Adding ZerodivisionError handeling
-- ## adding handeling system for the case where n1 < n2 in rnd app
+- ## adding handeling system for the case where n1 < n2 in rnd app  
