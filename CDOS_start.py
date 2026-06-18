@@ -90,7 +90,7 @@ if os == "win32":
         error_print(1,"win32print","start")
     else :
         error_print(1, "win32print", "start")
-        print(Fore.GREEN+"import of win32 success")
+        #print(Fore.GREEN+"import of win32 success")
 
 try:
     import pickle
@@ -107,6 +107,15 @@ except ImportError:
     error_print(1,"io","start")
 else:
     print("import of io module success")
+
+try:
+    import colorama
+except ImportError:
+    print("ERROR 0 : Critical, please refer to the error manual, CDOS will shutdown")
+    exit("ModuleImport error : Colorama module failed to import")
+else:
+    from colorama import Style, Fore
+    print(Fore.GREEN+"import of colorama module success")
 
 #definition of variables and saves import
 gmpth = {}
@@ -137,8 +146,8 @@ try :
 except:
     LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_number).pickle")
     session_number = 1
-    password = ["no password"]
-    sessions = ["General"]
+    password = [""]
+    sessions = [""]
 else:
     session_number = saving_session_number
     saving_session_number_io.close()
@@ -148,7 +157,7 @@ try :
         sessions_file = pickle.load(savingsessions_io)
 except:
     LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for sessions")
-    sessions = ["General"]
+    sessions = [""]
 else:
     sessions = sessions_file
     LOGGER.info(Fore.GREEN + "Save 4/7 found (sessions.bin)")
@@ -158,6 +167,7 @@ try:
         password = pickle.load(passwords_file)
 except :
     LOGGER.error(Fore.YELLOW+"Error 2 : can't find save in range for saving(session_passwords).pickle")
+    password = [""]
 else:
     LOGGER.info(Fore.GREEN + "Save 5/7 found (passwords.bin)")
     passwords_file.close()
@@ -241,8 +251,20 @@ def shutdown(saving_bp):
 print (Fore.GREEN+"os detected :",sys.platform)
 os = sys.platform
 tm.sleep(1/2)
-if sessions == "General" :
-    session = input(Fore.GREEN+"wich session do you want to start (please enter the identifiant of session) ?")
+#log-in system
+if sessions != [""] :
+    sessions_logging_while = 1
+    while sessions_logging_while == 1:
+        LOGGER.info(Fore.GREEN+"please enter youre identifant here (identifiant + password)")
+        session_login_input = input("")
+        password_login_input = input("")
+        if session_login_input in sessions and password_login_input in password:
+            sessionchoosed = session_login_input
+            LOGGER.info(Fore.GREEN+"Log-in successful !")
+            sessions_logging_while = 0
+        else:
+            tm.sleep(3)
+            LOGGER.error (Fore.RED+"Log-in error, please retry")
 else:
     mode = input(Fore.GREEN+"Do you want to run Normal or Guest ? (N/G) ")
     if mode == "N":
@@ -252,28 +274,24 @@ else:
         mode = ("guest")
         sessionchoosed = ("guest")
     else:
-         LOGGER.error("critical error : answer not correct")
+         LOGGER.error(Fore.RED+"Critical error : answer not correct")
          tm.sleep(3)
          shutdown(2)
+
 #end of starting
-
-
 LOGGER.info("CDOS is started")
 while True:
     order = input(LOGGER.info(Fore.GREEN + f"computer/{sessionchoosed}>"))
     if order == "calculator":
         easter_egg = rnd.randint(1,100)
-        LOGGER.info(easter_egg)
         if easter_egg == 11:
             LOGGER.info("your computer IS a calculator")
-        first_number = int(input("please enter the 1st number"))
-        sign = input("please enter the sign :")
-        second_number = int(input("please enter the 2nd number"))
-        if sign == "+":
-            if first_number == "2":
-                if second_number == "2":
-                    result = (5)
-                    LOGGER.info("2+2 = 5. you should know this.")
+        first_number = int(input("please enter the 1st number "))
+        sign = input("please enter the sign : ")
+        second_number = int(input("please enter the 2nd number "))
+        if first_number == "2" and sign == "+" and second_number == "2":
+            result = (5)
+            LOGGER.info("2+2 = 5. you should know this.")
         if sign == "/":
             result = (first_number/second_number)
         else:
@@ -285,7 +303,7 @@ while True:
                 else:
                     if sign == "+":
                         result = (first_number + second_number)
-        LOGGER.info("the result is",result)
+        print("the result is",result)
     if order == "help":
         LOGGER.info("here's the list of all the commands: \ncalculator : a very basic calculator \nhelp : you know")
         LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\nclock : an app with a timer and a calendar for day")
@@ -309,20 +327,20 @@ while True:
         except:
             LOGGER.info("critical error, please enter a valid number")
             continue
-        result = rnd.randint(float(first_limit),float(second_limit))
-        LOGGER.info("le nombre est ",result)
+        result = rnd.randint(int(first_limit),int(second_limit))
+        print("le nombre est ",result)
     if order == "settings":
             if mode == ("guest"):
                 LOGGER.info("error : you are not admin !")
             elif mode == "admin":
                 settings = 1
                 while settings == 1:
-                    order_settings = input("what do you want ?")
+                    order_settings = input(Fore.GREEN+"what do you want ? ")
                     if order_settings == ("help"):
                         LOGGER.info("here's the list of the commands : help : you know \nsessions : for create, delete and modify the sessions \ncdos.safetymode.bypass : bypass the safetymode (debugging)")
                         LOGGER.info("exit() : exit from this app \nadmin access : debugging and core's functions")
                     if order_settings == ("sessions"):
-                        if 1 in session_number:
+                        if session_number == 1:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
                             try:
                                 str(session_mode_order)
@@ -331,34 +349,38 @@ while True:
                                 seetings = 0
                             if session_mode_order == "Y":
                                 session_mode = 1
-                                while session_mode == 1:
-                                    session_mode_order = input("What do you want to do ? (Create : C, Modify : M, Delete : D)")
-                                    if session_mode_order == "exit()":
-                                        session_mode = 0
-                                    else:
-                                        if session_mode_order == "C":
-                                            session_number += 1
-                                            session = sessions.extend(input ("Please enter the new identifiant")+",")
-                                            passwords = passwords.extend(input ("Please enter the new password")+",")
-                                        else:
-                                            if session_mode_order == "M":
-                                                if sessions == "general":
-                                                    LOGGER.info("There's no session to modify")
-                                                session_to_modify = input("Wich session do you want to modify ?")
-                                                if session_to_modify in session:
-                                                    thing_to_modify = input("what do you want to modify ? (Password : P, Identifiant : I")
-                                                    if thing_to_modify == "P":
-                                                        position_session_to_modify = sessions.find()
-                                                        number_of_function = 0
-                                                        for session_to_modify in [sessions]:
-                                                            if session_to_modify == sessions:
-                                                                password_to_modify = passwords[number_of_function]
-                                                            else:
-                                                                number_of_function += 1
-                                                            if session_mode_order == "N":
-                                                                settings = 0
+                            if session_mode_order == "N":
+                                LOGGER.info ("you said no. session unchanged")
                             else:
                                 LOGGER.info("error, answer is not good")
+                        else:
+                            session_mode = 1
+                        while session_mode == 1:
+                            session_mode_order = input("What do you want to do ? (Create : C, Modify : M, Delete : D)")
+                            if session_mode_order == "exit()":
+                                session_mode = 0
+                            else:
+                                if session_mode_order == "C":
+                                    session_number += 1
+                                    sessions.append(input ("Please enter the new identifiant"))
+                                    password.append(input ("Please enter the new password"))
+                                else:
+                                    if session_mode_order == "M":
+                                        if sessions == "general":
+                                            LOGGER.info("There's no session to modify")
+                                        session_to_modify = input("Wich session do you want to modify ?")
+                                        if session_to_modify in sessions:
+                                            thing_to_modify = input("what do you want to modify ? (Password : P, Identifiant : I")
+                                            if thing_to_modify == "P":
+                                                position_session_to_modify = sessions.find()
+                                                number_of_function = 0
+                                                for session_to_modify in [sessions]:
+                                                    if session_to_modify == sessions:
+                                                        password_to_modify = password[number_of_function]
+                                                    else:
+                                                        number_of_function += 1
+                                                    if session_mode_order == "N":
+                                                        settings = 0
                     if order_settings == "exit()":
                             settings = 0
                     if order_settings == "admin access":
@@ -414,6 +436,8 @@ while True:
                                 #LOGGER.error("function doesn't work for now due to miscellanous reasons")
                                 app_path[new_app_name]= new_app_path
                                 print("the app ",new_app_name,"with the path",new_app_path,"has been added")
+                    else:
+                        print (Fore.YELLOW+"Bash error : command ", order_settings, "doesn't exist")
 
 
     if order == "text editor":
