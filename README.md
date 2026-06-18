@@ -1,6 +1,3 @@
 # CDOS
-A program that just have normal fonctionnalities like calculator or a random int generator, like an assistant 
 
-Instructions : 
-for the app launcher and the game launcher work, you have to pu the path in the lines of code where it's indicated
-WARNING : for war thunder, you have to put the path of launcher.exe and not the game, else, it won't be able to be up-to-date and you won't be able to play since an game upgrade is commited
+CDOS (Colony Develoment Operaring System) is a programm born to replace the ui and the base apps of the system you're based on. It have fonctionalities like calculator, a system ressources utilisation viewer (like the task manager of windows in the performance tabs, but just the numbers, not the graph.) it have also a basic test editor, an app and game launcher, and a system of sessions and password. On top of that, it has a saving functionnality. See the roadmap.md to know what comes next in terms of functionnalities. If you experience any bug while running the program, please report it on github, I surely will fix it shortly.
