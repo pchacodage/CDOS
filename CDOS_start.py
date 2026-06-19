@@ -1,27 +1,38 @@
 print("Colony Developement")
 print("CDOS is starting")
+
+#import colorama here because usefull
+
+import colorama
+from colorama import Style, Fore
+print(Fore.GREEN+"import of colorama module success")
 #put start code here
 safetymode = []
+#modules import and testing block
 def error_print (error_code,details,state):
-    if error_code == 0:
-        print ("Error 0 : Critical, please refer to the error manual, CDOS will shutdown.")
-        exit("Bash error : logging import error (code 0)")
     if error_code == 1:
         if state == "start":
-            print("Error 1 (",details,"): critical, CDOS will start in safety mode.")
-        if state == "during":
-            print("Error 1","(",details,"): critical, CDOS  has started in safety mode, so you can't access to this function for now, please retry later")
+           print(Fore.YELLOW+f"Error 1 ({details}): warning, CDOS will start in safety mode.\nPlease refer to the error manual")
+        elif state == "during":
+            print(Fore.YELLOW+f"Error 1 ({details}): warning, CDOS  has started in safety mode, so you can't access to this function for now, please retry later and refer to the error manual")
+    elif error_code == 2:
+        print(Fore.YELLOW+f"Error 2 : Can't find '{details},' in range")
+#modules import
 try:
     import time as tm
 except ImportError:
     error_print(1,"time","start")
     safetymode.append("1")
+else:
+    print("import of time module success")
 
 try:
     import datetime
 except ImportError:
     error_print(1,"datetime","start")
     safetymode.append("2")
+else:
+    print("import of datetime module success")
 
 #import math
 
@@ -30,32 +41,39 @@ try:
 except ImportError:
     error_print(1,"random","start")
     safetymode.append("3")
+else :
+    print("import of random module success")
 
-try:
-    import logging
-except ImportError:
-    error_print(0,"","")
-else:
-    LOGGER: logging.Logger = logging.getLogger(__name__)
-    LOGGER.addHandler(logging.StreamHandler())
-    LOGGER.setLevel(logging.INFO)
+
+import logging
+LOGGER: logging.Logger = logging.getLogger(__name__)
+LOGGER.addHandler(logging.StreamHandler())
+LOGGER.setLevel(logging.INFO)
+LOGGER.info("import of logger success")
 
 try:
     import os
 except ImportError:
     error_print(1,"os","start")
     safetymode.append("4")
+else:
+    LOGGER.info("import of os module success")
 
 try:
     import psutil
 except ImportError:
     error_print(1,"psutil","start")
     safetymode.append("5")
+else:
+    LOGGER.info("import of psutil module success")
+
 try:
     import sys
 except ImportError:
     error_print(1,"sys","start")
     safetymode.append("6")
+else:
+    LOGGER.info("import of sys module success")
 
 if os == "win32":
     try:
@@ -63,135 +81,226 @@ if os == "win32":
     except ImportError:
         safetymode.append("7")
         error_print(1,"win32print","start")
-else :
-    safetymode.append("7")
-    error_print(1, "win32print", "start")
+    else :
+        LOGGER.info(Fore.GREEN+"import of win32 success")
+
 try:
-    import sys
+    import pickle
 except ImportError:
-    error_print(1,"sys","start")
+    error_print(1,"pickle","start")
     safetymode.append("8")
-file = ""
-game_to_exe = "nah bro"
-txt_file = open("file_editor.txt", "a")
-txt_file.write(str(file))
-txt_file.close()
+else:
+    print("import of pickle module success")
+
+try:
+    import io
+except ImportError:
+    safetymode.append("9")
+    error_print(1,"io","start")
+else:
+    print("import of io module success")
+try:
+    import colorama
+except ImportError:
+    print("ERROR 0 : Critical, please refer to the error manual, CDOS will shutdown")
+    exit("ModuleImport error : Colorama module failed to import")
+else:
+    from colorama import Style, Fore
+    print(Fore.GREEN+"import of colorama module success")
+
+#definition of variables and saves import
+game_path = {}
+last_command = ""
+files_opened = []
+try :
+    with open("saving(app_path).pickle","rb") as game_path_io:
+        game_path = pickle.load(game_path_io)
+except:
+    error_print(2,"saving(app path)",None)
+else:
+    LOGGER.info(Fore.GREEN + "Save 1/7 found (saving(app_path).pickle)")
+    files_opened.append("gmpth")
+    game_path_io.close()
+
+try:
+   with open("saving(text_file).pickle","rb") as txt_file_io:
+        txt_file = pickle.load(txt_file_io)
+except:
+    error_print(2,"saving(text file)",None)
+    file = ""
+else:
+    file = txt_file
+    LOGGER.info(Fore.GREEN + "Save 2/7 found (saving(text_file).pickle)")
+    files_opened.append("txt_file")
+    txt_file_io.close()
+
+try :
+    with open("saving(sessions).pickle","rb") as savingsessions_io:
+        sessions_file = pickle.load(savingsessions_io)
+except:
+    error_print(2,"saving(sessions)",None)
+    sessions = [""]
+else:
+    sessions = sessions_file
+    LOGGER.info(Fore.GREEN + "Save 4/7 found (sessions.bin)")
+    files_opened.append("sessions")
+    savingsessions_io.close()
+try:
+    with open("saving(session_passwords).pickle","rb") as session_passwords_io:
+        password = pickle.load(session_passwords_io)
+except :
+    error_print(2,"saving(session_passwords)",None)
+    password = [""]
+else:
+    LOGGER.info(Fore.GREEN + "Save 5/7 found (passwords.bin)")
+    files_opened.append("session_passwords")
+    session_passwords_io.close()
+
+try:
+    with open("saving(app_path).pickle","rb") as app_path_io:
+        app_path = pickle.load(app_path_io)
+except:
+    error_print(2,"saving(app_path)",None)
+    app_path = {}
+else:
+    LOGGER.info(Fore.GREEN + "Save 6/7 found (saving(app_path).pickle)")
+    files_opened.append("app_path")
+    app_path_io.close()
+
+try:
+    with open("saving(script_database).pickle","rb") as script_database_io:
+        script_database = pickle.load(script_database_io)
+except:
+    error_print(2,"saving(script_database)",None)
+    script_database = {}
+else:
+    LOGGER.info(Fore.GREEN + "Save 7/7 found (saving(script_database).pickle)")
+    files_opened.append("script_database")
+    script_database_io.close()
+
 if "7" not in safetymode and os == "win32":
-    print()
     printer_name = win32print.GetDefaultPrinter()
-    print ("default printer is ", printer_name)
+    print (Fore.GREEN+"default printer is ", printer_name)
 else:
     error_print(1,"win32print","during")
 
-#for the good version, replace . txt (except txt_file ) to .bin
 def saving():
-    sessions_file = open("saving(sessions).bin","w")
-    sessions_file.write(str(sessions))
-    sessions_file.close()
-    session_number_file = open("saving(session_number).txt","w")
-    session_number_file.write(str(session_number))
-    session_number_file.close()
-    passwords_file = open ("saving(passwords).bin","w")
-    passwords_file.write(str(passwords_file))
-    passwords_file.close()
-    txt_file = open("file_editor.txt", "a")
-    txt_file.write(str(file))
-    txt_file.close()
+    if 8 not in safetymode:
+        session_file_saving = open("saving(sessions).pickle","w+b")
+        with open("saving(sessions).pickle","+wb") as sessions_io:
+            pickle.dump(sessions,sessions_io)
+            LOGGER.info(Fore.GREEN+"sessions saved (1/7)")
+            sessions_io.close()
+        session_file_saving.close()
+        with open("saving(session_passwords).pickle","w+b") as session_passwords_io:
+            pickle.dump(password,session_passwords_io)
+            LOGGER.info(Fore.GREEN+"passwords saved (3/7)")
+            session_passwords_io.close()
+        with open("saving(games_config).pickle","w+b") as game_path_io:
+            pickle.dump(game_path,game_path_io)
+            LOGGER.info(Fore.GREEN+"games config saved (4/7)")
+            game_path_io.close()
+        with open("saving(app_path).pickle","w+b") as app_path_io:
+            pickle.dump(app_path,app_path_io)
+            LOGGER.info(Fore.GREEN+"app path saved (5/7)")
+            app_path_io.close()
+        with open("saving(script_database).pickle","w+b") as script_database_io:
+            pickle.dump(script_database,script_database_io)
+            LOGGER.info(Fore.GREEN+"script database saved (6/7)")
+            script_database_io.close()
+        with open ("saving(text_file).pickle","w+b") as text_file_io:
+            pickle.dump(file,text_file_io)
+            LOGGER.info(Fore.GREEN+"text file saved (7/7)")
+            text_file_io.close()
 
-#set up seesions variables
-try : session_number_file = open("saving(session_number).bin","r")
-except:
-    sessions_file = open("saving(sessions).bin","w")
-    sessions_file.close()
-    session_number = ["general"]
-    session_number_file = open("saving(session_number).bin","w")
-    session_number_file.close()
-    session_number = 1
-    passwords_file = open ("saving(passwords)","w")
-    passwords_file.close()
-    passwords = ["No password"]
-
-
-session_number_file = open("saving(session_number).bin","r")
-session_number = session_number_file
-session_number_file.close()
-
-sessions_file = open("saving(sessions).bin","r")
-sessions = [sessions_file]
-sessions_file.close()
-
-passwords_file = open ("saving(passwords)","r")
-passwords = [passwords_file]
-passwords_file.close()
+#set up sessions variables
 
 def shutdown(saving_bp):
     if saving_bp == 0:
-        LOGGER.info("system is saving ...")
+        LOGGER.info(Fore.GREEN+"system is saving ...")
         saving()
-        LOGGER.info ("system is saved !")
-        LOGGER.info("system downing ...")
+        LOGGER.info (Fore.GREEN+"system is saved !")
+        LOGGER.info(Fore.GREEN+"system downing ...")
         tm.sleep (3)
-        LOGGER.info("system down !")
+        print("system down !")
         tm.sleep(1/2)
         exit()
     else:
-        LOGGER.info("forcing shuting down (without save) ...")
+        LOGGER.info(Fore.RED+"forcing shuting down (without save) ...")
         tm.sleep(1/2)
         exit()
-print ("os detected :",sys.platform)
+print (Fore.GREEN+"os detected :",sys.platform)
 os = sys.platform
-if sessions == "General" :
-    session = input("wich session do you want to start (please enter the identifiant of session) ?")
+tm.sleep(1/2)
+#log-in system
+if sessions != [""] :
+    sessions_logging_while = 1
+    while sessions_logging_while == 1:
+        LOGGER.info(Fore.GREEN+"please enter youre identifant here (identifiant + password)")
+        session_login_input = input("")
+        password_login_input = input("")
+        if session_login_input in sessions and password_login_input in password:
+            sessionchoosed = session_login_input
+            LOGGER.info(Fore.GREEN+"Log-in successful !")
+            sessions_logging_while = 0
+            mode = "admin"
+        else:
+            tm.sleep(3)
+            LOGGER.error (Fore.RED+"Log-in error, please retry")
 else:
-    mode = input("Do you want to run Normal or Guest ? (N/G) ")
+    mode = input(Fore.GREEN+"Do you want to run Normal or Guest ? (N/G) ")
     if mode == "N":
-        mode = ("admin")
-        sessionchoosed = ("general")
+        mode = "admin"
+        sessionchoosed = "general"
     elif mode == "G":
-        mode = ("guest")
-        sessionchoosed = ("guest")
+        mode = "guest"
+        sessionchoosed = "guest"
     else:
-         LOGGER.info("critical error : answer not availaible")
+         LOGGER.error(Fore.RED+"Critical error : answer not correct")
          tm.sleep(3)
-         shutdown(1)
+         shutdown(2)
+
 #end of starting
-
-
 LOGGER.info("CDOS is started")
 while True:
-    order = input(LOGGER.info(f"computer/{sessionchoosed}>"))
+    tm.sleep(1/4)
+    order = input(Fore.GREEN + f"computer/{sessionchoosed}>")
     if order == "calculator":
         easter_egg = rnd.randint(1,100)
-        LOGGER.info(easter_egg)
         if easter_egg == 11:
             LOGGER.info("your computer IS a calculator")
-        first_number = int(input("please enter the 1st number"))
-        sign = input("please enter the sign :")
-        second_number = int(input("please enter the 2nd number"))
-        if sign == "+":
-            if first_number == "2":
-                if second_number == "2":
-                    result = (5)
-                    LOGGER.info("2+2 = 5. you should know this.")
-        if sign == "/":
-            result = (first_number/second_number)
-        else:
-            if sign == "*":
-                result = (first_number*second_number)
-            else:
-                if sign == "-":
-                    result = (first_number-second_number)
+        first_number = int(input("please enter the 1st number "))
+        sign = input("please enter the sign : ")
+        second_number = int(input("please enter the 2nd number "))
+        if first_number == 2 and sign == "+" and second_number == 2:
+            result = 5
+            LOGGER.info("2+2 = 5. you should know this.")
+        # result = first_number/second_number if sign == "/" else first_number*second_number if sign == "*" else ....
+        result = first_number
+        match sign:
+            case "/":
+                if sign == "/" and second_number == 0:
+                    LOGGER.error("Error : you can't divide by 0")
+                    result = None
                 else:
-                    if sign == "+":
-                        result = (first_number + second_number)
-        LOGGER.info("the result is",result)
+                    result /= second_number
+            case "*":
+                result *= second_number
+            case "-":
+                result -= second_number
+            case "+":
+                result += second_number
+            case _ : # default
+                raise ValueError(f'Sign value "{sign}" not recognized; Only supports /, *, - or +')
+
+        LOGGER.info(Fore.GREEN+"the result is {result}")
     if order == "help":
-        LOGGER.info("here's the list of all the commands: \n calculator : a very basic calculator \n help : you know")
-        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\n clock : an app with a timer and a calendar for day")
-        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \n SHUTDOWN : shutdown the system")
-        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \n Wait a minute ... : no desc \n clock : an app that makes clocks, calendar ...")
+        LOGGER.info("here's the list of all the commands: \ncalculator : a very basic calculator \nhelp : you know")
+        LOGGER.info (" rnd : : choose a random number between 2 numbers you choose\nclock : an app with a timer and a calendar for day")
+        LOGGER.info (" text editor : gives you a very basic txt file editor that saves when you shutdown the system \nSHUTDOWN : shutdown the system")
+        LOGGER.info ("SHUTDOWN (NOSAVE) : Shutdown the system without saving \nWait a minute ... : no desc \nclock : an app that makes clocks, calendar ...")
         LOGGER.info ("games : a menu to launch games from you computer (only works if setted up)")
-        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \n app launcher : a launcher for regular apps")
+        LOGGER.info ("colony development assist : an coded assistant (not ai) to gives you information during coding \napp launcher : a launcher for regular apps")
         if os == "win32":
             LOGGER.info ("text_file.print : command that prints your text from the text editor to a paper printer")
         LOGGER.info ("fd backup : a system for backup floppy disks (forcing the system to copy files from fd to disk, in CDOS file)")
@@ -200,7 +309,7 @@ while True:
         try:
             int(first_limit)
         except:
-            ("critical error, please enter a number")
+            LOGGER.info("critical error, please enter a number")
             continue
         second_limit = input ("please enter the second limit")
         try:
@@ -208,20 +317,24 @@ while True:
         except:
             LOGGER.info("critical error, please enter a valid number")
             continue
-        result = rnd.randint(float(first_limit),float(second_limit))
-        LOGGER.info("le nombre est ",result)
+        if first_limit > second_limit:
+            exchange = first_limit
+            first_limit = second_limit
+            second_limit = exchange
+        result = rnd.randint(int(first_limit),int(second_limit))
+        LOGGER.info(f"the result is : {result}")
     if order == "settings":
-            if mode == ("guest"):
+            if mode == "guest":
                 LOGGER.info("error : you are not admin !")
             elif mode == "admin":
                 settings = 1
                 while settings == 1:
-                    order_settings = input("what do you want ?")
-                    if order_settings == ("help"):
-                        LOGGER.info("here's the list of the commands : help : you know \n sessions : for create, delete and modify the sessions \n cdos.safetymode.bypass : bypass the safetymode (debugging)")
-                        LOGGER.info("exit() : exit from this app \n admin access : debugging and core's functions")
+                    order_settings = input(Fore.GREEN+"what do you want ? ")
+                    if order_settings == "help":
+                        LOGGER.info("here's the list of the commands : help : you know \nsessions : for create, delete and modify the sessions \ncdos.safetymode.bypass : bypass the safetymode (debugging)")
+                        LOGGER.info("exit() : exit from this app \nadmin access : debugging and core's functions")
                     if order_settings == ("sessions"):
-                        if session_number == 1:
+                        if len(sessions) == 1:
                             session_mode_order = input("Currently, the mode admin/guest sessions is active, do you want to change it ? (Y/N)")
                             try:
                                 str(session_mode_order)
@@ -230,49 +343,99 @@ while True:
                                 seetings = 0
                             if session_mode_order == "Y":
                                 session_mode = 1
-                                while session_mode == 1:
-                                    session_mode_order = input("What do you want to do ? (Create : C, Modify : M, Delete : D)")
-                                    if session_mode_order == "exit()":
-                                        session_mode = 0
-                                    else:
-                                        if session_mode_order == "C":
-                                            session_number += 1
-                                            session = sessions.extend(input ("Please enter the new identifiant")+",")
-                                            passwords = passwords.extend(input ("Please enter the new password")+",")
-                                        else:
-                                            if session_mode_order == "M":
-                                                if sessions == "general":
-                                                    LOGGER.info("There's no session to modify")
-                                                session_to_modify = input("Wich session do you want to modify ?")
-                                                if session_to_modify in session:
-                                                    thing_to_modify = input("what do you want to modify ? (Password : P, Identifiant : I")
-                                                    if thing_to_modify == "P":
-                                                        position_session_to_modify = sessions.find()
-                                                        number_of_function = 0
-                                                        for session_to_modify in [sessions]:
-                                                            if session_to_modify == sessions:
-                                                                password_to_modify = passwords[number_of_function]
-                                                            else:
-                                                                number_of_function += 1
-                                                            if session_mode_order == "N":
-                                                                settings = 0
+                            if session_mode_order == "N":
+                                LOGGER.info ("you said no. session unchanged")
                             else:
                                 LOGGER.info("error, answer is not good")
+                        else:
+                            session_mode = 1
+                        while session_mode == 1:
+                            session_mode_order = input("What do you want to do ? (Create : C, Modify : M, Delete : D)")
+                            if session_mode_order == "exit()":
+                                session_mode = 0
+                            else:
+                                if session_mode_order == "C":
+                                    if sessions == [""]:
+                                        sessions = []
+                                        password = []
+                                    sessions.append(input (Fore.GREEN+"Please enter the new identifiant"))
+                                    password.append(input ("Please enter the new password"))
+                                else:
+                                    if session_mode_order == "M":
+                                        if sessions == "general":
+                                            LOGGER.info("There's no session to modify")
+                                        session_to_modify = input("Wich session do you want to modify ?")
+                                        if session_to_modify in sessions:
+                                            thing_to_modify = input("what do you want to modify ? (Password : P, Identifiant : I")
+                                            if thing_to_modify == "P":
+                                                # position_session_to_modify = sessions.find()
+                                                number_of_function = 0
+                                                for session_to_modify in [sessions]:
+                                                    if session_to_modify == sessions:
+                                                        password_to_modify = password[number_of_function]
+                                                    else:
+                                                        number_of_function += 1
+                                                    if session_mode_order == "N":
+                                                        settings = 0
                     if order_settings == "exit()":
                             settings = 0
                     if order_settings == "admin access":
-                        adminaccess_order = input(f"computer/{sessionchoosed}/admin_panel>")
+                        adminaccess_order = input(Fore.CYAN+f"computer/{sessionchoosed}/admin_panel>")
                         if adminaccess_order == "fl.close":
-                            sessions_file.close()
-                            session_number_file.close()
-                            passwords_file.close()
-                            txt_file.close()
-                        if adminaccess_order == "variables.print":
-                            LOGGER.info("Here's the list of all the system's variables")
-                            LOGGER.info
+                            if "gmpth" in files_opened :
+                                game_path_io.close()
+                            if "txt_file" in files_opened :
+                                txt_file_io.close()
+                            savingsessions_io.close()
+                            if "app_path" in files_opened :
+                                app_path_io.close()
+                                script_database_io.close()
+                                session_passwords_io.close()
+                                LOGGER.info("")
                         if adminaccess_order == "safetymode.bypass":
-                            safetymode.clear
+                            safetymode = []
                             LOGGER.info("Safetymode has been disabled !")
+                    if order_settings == "games config":
+                        LOGGER.info("\nHere's the list of all the games configured")
+                        game_config = 1
+                        while game_config == 1:
+                            gm_cnfg_ordr= input("What game config do you want to modify ?")
+                            if gm_cnfg_ordr == "help":
+                                LOGGER.info("add : add a new game to the config\nmodify : modify a game config\nhelp : show the help menu (this commmand)\nexit() : escape from this program")
+                            if gm_cnfg_ordr == "add":
+                                nw_gm_nm = input("please enter the name of the game")
+                                nw_gm_pth = input("please enter the path of the game")
+                                game_path_io[str(nw_gm_nm)]= nw_gm_pth
+                                print(f"the game", nw_gm_nm,"at the path",nw_gm_pth,"has succefully been added")
+                            if gm_cnfg_ordr == "modify":
+                                gm_cnfg_mdf = str(input("please enter the name of the game"))
+                                try:
+                                    gm_cnfg_pth = input("please enter the name of the game") in game_path
+                                except:
+                                    LOGGER.error("Error 2 : game not found")
+                                else:
+                                    LOGGER.info ("game found !")
+                            if gm_cnfg_ordr == "exit()":
+                                game_config = 0
+
+                    if order_settings == "apps config":
+                        apps_config_while = 1
+                        LOGGER.info("\nHere's the list of all the apps configured")
+                        tm.sleep(1/2)
+                        LOGGER.info(app_path)
+                        while apps_config_while == 1:
+                            apps_config_order = input("what do you want ?")
+                            if apps_config_order == "help":
+                                LOGGER.info("add : add a new app to the config")
+                            if apps_config_order == "add":
+                                new_app_name = input("please enter the name of the new app")
+                                new_app_path = input("please enter the path of the new app")
+                                #both varibles are str
+                                #LOGGER.error("function doesn't work for now due to miscellanous reasons")
+                                app_path[new_app_name]= new_app_path
+                                print("the app ",new_app_name,"with the path",new_app_path,"has been added")
+                    else:
+                        print (Fore.YELLOW+"Bash error : command ", order_settings, "doesn't exist")
 
 
     if order == "text editor":
@@ -282,6 +445,7 @@ while True:
         else:
             LOGGER.info(file)
             file = (file + input(""))
+            file =+ " "
     if order == "SHUTDOWN":
            shutdown(0)
     if order == "SHUTDOWN (NOSAVE)":
@@ -294,7 +458,7 @@ while True:
         while clock == 1:
             clock_order = input ("What do you want")
             if clock_order == "help":
-                LOGGER.info("here's the list of the command:\n help : you know\n timer : a timer\n calendar : a calendar for today \n exit() : exit from the clock menu")
+                LOGGER.info("here's the list of the command:\nhelp : you know\ntimer : a timer\ncalendar : a calendar for today \nexit() : exit from the clock menu")
             if clock_order == "timer":
                 timer_sec = input ("How Many second do you want ?")
                 timer_minute = input("how many minutes do you want ?")
@@ -323,9 +487,8 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "help":
-                 LOGGER.info ("here the list of the differents commands : \n wt : starts war thunder \n help : you know \n exit() : exit from the game menu")
-                 LOGGER.info ("X-plane 12 : Launch X-plane 12 if steam is opened \n Roblox : start roblox \n ng : start the nationsglory launcher")
-                 LOGGER.info("Minecraft : launch the Minecraft launcher \n CS2 : starts Counter-strike2")
+                 LOGGER.info ("just enter the name of the game to execute it, here's the lists of all the games")
+                 LOGGER.info(game_path)
              if gameorder == "exit()":
                  gamemenu = 0
              if gameorder == "X-plane 12":
@@ -333,8 +496,8 @@ while True:
                  os.system(r"")
                  gamemenu = 0
              if gameorder == "Minecraft":
-                 Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/N)")
-                 if Minecraft_mod == "N":
+                 Minecraft_mod = input ("Do you want Minecraft with mods ? (Y/n)")
+                 if Minecraft_mod == "n":
                     LOGGER.info("tun tun tun tun; tin tin tit; tan tan tan tan ")
                     gamemenu = 0
                     os.system(r"")
@@ -448,25 +611,29 @@ while True:
             if coldevassistorder == "help":
                 LOGGER.info ("ASCII repository : a repository of all the symbols of you're keyboard with their hexadecimal, binary code and their description")
                 LOGGER.info ("exit() : exit from the app \n database : access to your script database \n help : you know")
+            if coldevassistorder == "script_database.add":
+                new_script_name = input("Please name your script")
+                new_script = input("Please enter the script here")
+                script_database[new_script_name] = new_script
+                LOGGER.info ("the script has succefully been added to the database")
+                tm.sleep(1 / 2)
             if coldevassistorder == "database":
                 databaseorder = input("Which data do you want ? (language, title)")
                 if ("python") in databaseorder:
                     databaseorder_python = input("which script do you want to keep ?")
-        LOGGER.info ("error : bash : command not found !")
+        LOGGER.info (Fore.YELLOW+"error : bash : command not found !")
     if order == "app launcher":
         app_launch = input("Which app do you want to launch ?")
         if app_launch == "internet":
             os.system ("put internet.exe path here")
         if app_launch == "start server":
             LOGGER.info ("starting server ...")
-            # start in first the internet pipe like playit.gg
             os.system(r"")
-            # finally, start the server with start.bat
             os.system(r"")
             LOGGER.info ("server started")
             if app_launch == "help":
-                LOGGER.info ("start server : start the Minecraft server and the internet pipe you configured \n internet : start an internet navigator")
-
+                LOGGER.info ("just type the name of the app and it will execute it, here's the list of all the apps configured")
+                LOGGER.info(app_path)
     if order == "computer info":
          screen_monitoring_while = 1
          if "5" in safetymode:
@@ -478,27 +645,25 @@ while True:
             cpu_usages = psutil.cpu_percent(interval=1, percpu=True)
             memory = psutil.virtual_memory()
             disk_usage = psutil.disk_usage('/')
-            disk_usage = psutil.disk_usage('/')
-            disk_usage = psutil.disk_usage('/')
             net_io = psutil.net_io_counters()
             #showing variables
-            LOGGER.info(f"Utilisation du CPU : {cpu_usage}%")
-            cpu_usages = psutil.cpu_percent(interval=1, percpu=True)
+            LOGGER.info(Fore.GREEN+f"Utilisation du CPU : {cpu_usage}%")
             for i, usage in enumerate(cpu_usages, 1):
-                print(f"Cœur {i} : {usage}%")
+                print(Fore.GREEN+f"Cœur {i} : {usage}%")
             LOGGER.info(f"Utilisation RAM : {memory.percent}%")
             LOGGER.info(f"Utilisation du disque : {disk_usage.percent}%")
             LOGGER.info(f"Octets envoyés : {net_io.bytes_sent}")
             LOGGER.info(f"Octets reçus : {net_io.bytes_recv}")
          while screen_monitoring_while == 1:
+             tm.sleep(1/2)
              screen_monitoring_order = input("which part do you want to see in detail ?")
              if screen_monitoring_order == "help":
                 LOGGER.info ("you can just type the name of the composant (cpu, RAM, internet,sensor, disk, general info) and, if it's a process, just type process name of the process ")
              if screen_monitoring_order == "cpu":
                 cores_physiques = psutil.cpu_count(logical=False)
                 cores_logiques = psutil.cpu_count(logical=True)
-                LOGGER.info("Cœurs physiques :", cores_physiques)
-                LOGGER.info("Cœurs logiques   :", cores_logiques)
+                print("Cœurs physiques :", cores_physiques)
+                print("Cœurs logiques   :", cores_logiques)
                 freq = psutil.cpu_freq()
                 if freq:
                     print(f"Fréquence actuelle : {freq.current} MHz")
@@ -521,6 +686,7 @@ while True:
                 disk_io = psutil.disk_io_counters()
                 LOGGER.info("Lectures :", disk_io.read_bytes, "octets")
                 LOGGER.info("Écritures :", disk_io.write_bytes, "octets")
+                tm.sleep(1)
              if screen_monitoring_order == "internet":
                  net_if_addrs = psutil.net_if_addrs()
                  for interface_name, interface_addresses in net_if_addrs.items():

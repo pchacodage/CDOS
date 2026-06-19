@@ -9,12 +9,28 @@
   - ### ~~clock~~
   - ### ~~colony development assist~~
 - ## ~~make a function to easier print the errors~~
-- ## make the import error system capable of handeling multiples import error
-- ## do not create the saving files if they're empty
-- ## fixing the shutdown without saving that actually make saves
-- ## finish the fd backup tool
-- ## adding a config for file path for games and app launch
-  - ### adding the possibility to add apps to the app launcher
-- ## fixing the computer info command by replacing all the loggers by print
-- ## adding a system to add elements to the database of the coldev assist
-- ## change the color of the logging in function of the situation
+- ## ~~make the import error system capable of handling multiples import error~~
+- ## ~~do not create the saving files if they're empty~~
+- ## ~~fixing the shutdown without saving that actually make saves~~
+- ## bp (finish the fd backup tool)
+- ## ~~adding a config for file path for games and app launch~~
+  - ### ~~##adding the possibility to add apps to the app launcher~~
+    - #### ~~add the save of the paths in another saving file (named gmpth.bin and apppth.bin)~~
+  - ### ~~re-configure the help app to handle the dictionary of all the path~~
+- ## ~~fixing the computer info command by replacing all the loggers by print~~
+- ## ~~adding a system to add elements to the database of the coldev assist~~
+- ## ~~change the color of the logging in function of the situation~~
+- ## ~~code the sessions sys~~
+- ## ~~integrate the error code n2 in the error print function~~
+- ## cleaning update : make everything more clean in the console and beauty/rename the variable to be more developer-friendly
+  - ### ~~add a space between two different saves of the text editor~~
+  - ### ~~make the "none" printed sometimes in the console go~~
+- ## ~~finish the print all variables function in the admin panel~~
+- ## add a self-test system in admin panel and at the start
+- ## delete session_numbr and replace it by len(sessions)
+- ## Create an SLM (Small Language Model) ?
+- ## ~~Adding ZerodivisionError handling~~
+- ## ~~adding handling system for the case where n1 > n2 in rnd app~~  
+- ## add the possibility to be admin or not with sessions enabled
+- ## add different saving depending on which session you currently use
+- ## resolve all current flagged problem
